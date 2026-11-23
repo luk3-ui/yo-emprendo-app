@@ -118,7 +118,7 @@ h2{font-size:28px;line-height:1.15;font-weight:700}
 .card.tall{min-height:214px}
 .up{text-transform:uppercase;font-weight:800;font-size:34px;line-height:1.22;text-align:center}
 #screen[data-k=wel] .btn{color:#1f2937}
-#screen[data-k=wel] .wtag{font-size:26px;line-height:1.35;letter-spacing:.02em}
+#screen[data-k=wel] .wtag{font-size:26px;line-height:1.35;letter-spacing:.02em}.regular-wtag{max-width:340px;margin:28px auto 0;font-weight:400;text-transform:none;text-align:center;line-height:1.3}
 #screen[data-k=wel] .wlogo svg{width:min(100%,300px);height:auto;animation:wmIn 1.2s cubic-bezier(.4,0,.2,1) both}
 .sub30{font-size:30px;line-height:1.4;text-align:center}
 .wa{width:96px;height:96px;border-radius:24px;background:#0f766e;color:#fff;display:grid;place-items:center}
@@ -167,7 +167,7 @@ textarea.field{min-height:150px;resize:none;line-height:1.3}
 #screen[data-k=login] .field{min-height:clamp(52px,8.4cqh,80px);font-size:clamp(19px,2.8cqh,24px)}
 #screen[data-k=login] .label{font-size:clamp(17px,2.4cqh,20px)}
 #screen[data-k=login] .lead,#screen[data-k=login] .body{font-size:clamp(17px,2.4cqh,22px)}
-#screen[data-k=login]>.btn{min-height:104px;font-size:32px}
+#screen[data-k=login]{gap:12px;padding-top:14px;padding-bottom:14px}#screen[data-k=login] .sp{flex:0 0 4px}#screen[data-k=login]>.btn{min-height:88px;font-size:28px}#screen[data-k=login]>.btn.sec.mini{min-height:62px;padding:8px 16px;font-size:22px;margin-bottom:2px}
 textarea.field.cmp{flex:1 1 auto;height:auto;min-height:clamp(52px,7.5cqh,92px)}
 #screen[data-k=onb] .btn.sec[data-voice]{min-height:76px;margin:2px 5px 4px 0;font-size:clamp(20px,3cqh,26px)}
 #screen[data-k=onb]>.btn{min-height:104px;font-size:clamp(24px,3.7cqh,32px);margin-bottom:6px}
@@ -361,7 +361,7 @@ const prod = id => S.prods.find(p => p.id === +id);
 
 /* ---------- ayuda ---------- */
 const TIPS = {
-  login: 'Escribí tu número de WhatsApp y tocá «Mandarme el código».',
+  login: 'El número de prueba ya está cargado. Tocá «Mandarme el código» o saltá esta etapa.',
   menu: 'Tocá «Mi Tienda Digital» para manejar tus productos y pedidos, o «Postularme a una feria» para armar tu carpeta.',
   dash: 'Acá está todo lo de tu tienda. Si todavía no la armaste, tocá «Armar mi tienda».',
   pick: 'Tocá la foto que quieras y después «Usar esta foto».',
@@ -409,8 +409,8 @@ const WM = `<svg role="img" aria-label="Yo Emprendo!" viewBox="0 0 306 56" fill=
 <path d="M13.5759 46.5938V32.6709L0 10.8234H9.796L17.7285 24.5856L25.661 10.8234H35.5101L21.9344 32.6709V46.5938H13.5759Z" fill="white"/>
 </svg>`;
 R.splash = () => ({ html: `<div class="sp"></div><div class="center">${WM}</div><div class="sp"></div>`, bg: '#0f766e', auto: ['wel', 1700, 1] });
-R.wel = () => ({ html: `<div class="sp"></div><div class="center wlogo">${WM}</div><div class="sp"></div>${btn('Empecemos', 'welNext', { tone: 'blanco', arg: 1 })}<div class="sp"></div><h1 class="up wtag" tabindex="-1">Tu emprendimiento, listo para vender.</h1><div class="sp"></div>`, bg: '#0f766e', fg: '#fff' });
-R.login = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div><h1 tabindex="-1">Entrá con tu número de WhatsApp</h1>${field('tel', 'Tu número de WhatsApp', { tel: true, ph: '342 555-1234', v: S.phone, voice: false, err: 'Revisá el número: tiene que tener al menos 8 cifras.' })}<p class="lead muted">Te mando un código por WhatsApp.</p><div class="sp"></div>${btn('Mandarme el código', 'login', { tone: 'teal' })}`, kind: 'login' });
+R.wel = () => ({ html: `<h1 class="wtag regular-wtag" tabindex="-1">Tu emprendimiento,<br> listo para vender.</h1><div class="sp"></div>${btn('Empecemos', 'welNext', { tone: 'blanco', arg: 1 })}<div class="sp"></div>`, bg: '#0f766e', fg: '#fff' });
+R.login = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div><h1 tabindex="-1">Entrá con tu número de WhatsApp</h1>${field('tel', 'Tu número de WhatsApp', { tel: true, ph: '342 555-1234', v: S.phone || '342 555-1234', voice: false, err: 'Revisá el número: tiene que tener al menos 8 cifras.' })}<p class="lead muted">Te mando un código por WhatsApp.</p><div class="sp"></div>${btn('Mandarme el código', 'login', { tone: 'teal' })}${btn('Saltar esta etapa', 'skipLogin', { sec: true, cls: 'mini' })}`, kind: 'login' });
 R.onb = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div>${hero('Contanos sobre tu emprendimiento', 'Así te van a conocer en tu tienda y en las ferias')}${field('shop', '¿Cómo se llama tu emprendimiento?', { ph: 'Ej: Mora', v: S.shop, voice: false, err: 'Escribí el nombre de tu emprendimiento.' })}${field('desc', 'Contanos brevemente qué vendés', { wide: true, compact: true, area: true, ph: 'Ej: Carteras, bolsos y accesorios hechos para acompañarte todos los días.', v: S.desc, err: '' })}<div class="sp"></div>${btn('Empezar a usar mi app', 'onbSave', { tone: 'teal' })}` });
 R.menu = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div><h1 tabindex="-1">Mi emprendimiento</h1>
   <button type="button" class="card t-tienda" data-act="toTienda">${ic('bag')}Mi Tienda Digital</button>
@@ -616,6 +616,7 @@ const ACT = {
   back, help, closeHelp: hideTip,
   welNext(a) { go('login'); },
   login() { if (!need('tel', 8)) return; S.phone = val('tel'); go('onb'); },
+  skipLogin() { S.phone = digits(val('tel')) || '3425551234'; go('onb'); },
   onbSave() { if (!need('shop')) return; S.shop = val('shop'); S.desc = val('desc'); home('menu'); },
   toMenu() { home('menu'); },
   toTienda() { go('dash'); },
