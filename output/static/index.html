@@ -121,7 +121,7 @@ h2{font-size:28px;line-height:1.15;font-weight:700}
 #screen[data-k=wel] .wtag{font-size:26px;line-height:1.35;letter-spacing:.02em}.regular-wtag{max-width:340px;margin:28px auto 0;font-weight:400;text-transform:none;text-align:center;line-height:1.3}
 #screen[data-k=wel] .wlogo svg{width:min(100%,300px);height:auto;animation:wmIn 1.2s cubic-bezier(.4,0,.2,1) both}
 .sub30{font-size:30px;line-height:1.4;text-align:center}
-.wa{width:96px;height:96px;border-radius:24px;background:#0f766e;color:#fff;display:grid;place-items:center}
+.wa{width:96px;height:96px;border-radius:24px;background:#4846b3;color:#fff;display:grid;place-items:center}
 .wa svg{width:56px;height:56px}
 .sec-t{font-size:24px;font-weight:700;margin-top:4px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}
@@ -408,10 +408,10 @@ const WM = `<svg role="img" aria-label="Yo Emprendo!" viewBox="0 0 306 56" fill=
 <path d="M45.3779 39.0324C44.2916 40.2157 42.9295 40.8044 41.2861 40.8044C39.6484 40.8044 38.2748 40.2157 37.1717 39.0324C36.0686 37.8493 35.5116 35.8566 35.5116 33.06C35.5116 30.2295 36.0743 28.2481 37.2 27.1215C38.3198 25.9893 39.6819 25.4231 41.2861 25.4231C42.8563 25.4231 44.2016 25.9893 45.3272 27.1215C46.4472 28.2481 47.0099 30.2295 47.0099 33.06C47.0099 35.8566 46.4641 37.8493 45.3779 39.0324ZM53.3196 25.1289C52.7397 24.223 52.0866 23.4249 51.3497 22.7285C50.4039 21.8341 49.3289 21.1151 48.1301 20.5604C45.9911 19.5753 43.7119 19.0771 41.2861 19.0771C38.8266 19.0771 36.5303 19.5753 34.3914 20.5604C32.2527 21.5454 30.5249 23.0682 29.2022 25.1289C27.885 27.1894 27.2266 29.8332 27.2266 33.06C27.2266 36.2529 27.885 38.8966 29.2022 40.9968C30.5249 43.0915 32.2527 44.6426 34.3914 45.6446C36.5303 46.6523 38.8266 47.1504 41.2861 47.1504C43.7119 47.1504 45.9911 46.6523 48.1301 45.6446C49.3289 45.0842 50.4039 44.3482 51.3497 43.4425C52.0866 42.7292 52.7397 41.9139 53.3196 40.9968C54.6364 38.8966 55.2949 36.2529 55.2949 33.06C55.2949 29.8332 54.6364 27.1894 53.3196 25.1289Z" fill="white"/>
 <path d="M13.5759 46.5938V32.6709L0 10.8234H9.796L17.7285 24.5856L25.661 10.8234H35.5101L21.9344 32.6709V46.5938H13.5759Z" fill="white"/>
 </svg>`;
-R.splash = () => ({ html: `<div class="sp"></div><div class="center">${WM}</div><div class="sp"></div>`, bg: '#0f766e', auto: ['wel', 1700, 1] });
-R.wel = () => ({ html: `<h1 class="wtag regular-wtag" tabindex="-1">Tu emprendimiento,<br> listo para vender.</h1><div class="sp"></div>${btn('Empecemos', 'welNext', { tone: 'blanco', arg: 1 })}<div class="sp"></div>`, bg: '#0f766e', fg: '#fff' });
-R.login = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div><h1 tabindex="-1">Entrá con tu número de WhatsApp</h1>${field('tel', 'Tu número de WhatsApp', { tel: true, ph: '342 555-1234', v: S.phone || '342 555-1234', voice: false, err: 'Revisá el número: tiene que tener al menos 8 cifras.' })}<p class="lead muted">Te mando un código por WhatsApp.</p><div class="sp"></div>${btn('Mandarme el código', 'login', { tone: 'teal' })}${btn('Saltar esta etapa', 'skipLogin', { sec: true, cls: 'mini' })}`, kind: 'login' });
-R.onb = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div>${hero('Contanos sobre tu emprendimiento', 'Así te van a conocer en tu tienda y en las ferias')}${field('shop', '¿Cómo se llama tu emprendimiento?', { ph: 'Ej: Mora', v: S.shop, voice: false, err: 'Escribí el nombre de tu emprendimiento.' })}${field('desc', 'Contanos brevemente qué vendés', { wide: true, compact: true, area: true, ph: 'Ej: Carteras, bolsos y accesorios hechos para acompañarte todos los días.', v: S.desc, err: '' })}<div class="sp"></div>${btn('Empezar a usar mi app', 'onbSave', { tone: 'teal' })}` });
+R.splash = () => ({ html: `<div class="sp"></div><div class="center">${WM}</div><div class="sp"></div>`, bg: '#4846b3', auto: ['wel', 1700, 1] });
+R.wel = () => ({ html: `<h1 class="wtag regular-wtag" tabindex="-1">Tu emprendimiento,<br> listo para vender.</h1><div class="sp"></div>${btn('Empecemos', 'welNext', { tone: 'blanco', arg: 1 })}<div class="sp"></div>`, bg: '#4846b3', fg: '#fff' });
+R.login = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div><h1 tabindex="-1">Entrá con tu número de WhatsApp</h1>${field('tel', 'Tu número de WhatsApp', { tel: true, ph: '342 555-1234', v: S.phone || '342 555-1234', voice: false, err: 'Revisá el número: tiene que tener al menos 8 cifras.' })}<p class="lead muted">Te mando un código por WhatsApp.</p><div class="sp"></div>${btn('Mandarme el código', 'login', { tone: 'tienda' })}${btn('Saltar esta etapa', 'skipLogin', { sec: true, cls: 'mini' })}`, kind: 'login' });
+R.onb = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div>${hero('Contanos sobre tu emprendimiento', 'Así te van a conocer en tu tienda y en las ferias')}${field('shop', '¿Cómo se llama tu emprendimiento?', { ph: 'Ej: Mora', v: S.shop, voice: false, err: 'Escribí el nombre de tu emprendimiento.' })}${field('desc', 'Contanos brevemente qué vendés', { wide: true, compact: true, area: true, ph: 'Ej: Carteras, bolsos y accesorios hechos para acompañarte todos los días.', v: S.desc, err: '' })}<div class="sp"></div>${btn('Empezar a usar mi app', 'onbSave', { tone: 'tienda' })}` });
 R.menu = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div><h1 tabindex="-1">Mi emprendimiento</h1>
   <button type="button" class="card t-tienda" data-act="toTienda">${ic('bag')}Mi Tienda Digital</button>
   <button type="button" class="card t-feria" data-act="toFerias">${ic('folder')}Postularme a una feria</button>`, kind: 'menu' });
@@ -737,17 +737,37 @@ jump.innerHTML = Object.keys(R).map(k => `<option value="${k}">${NAMES[k] || k}<
 jump.addEventListener('change', () => { if (cur === 'pedit' || jump.value === 'pedit') { S.editing = 'new'; S.pdraft = S.pdraft || { name: '', price: '', desc: '', photo: false }; } if (jump.value === 'fair') S.fair = 1; H = [['menu', null]]; render(jump.value, jump.value === 'wel' ? 1 : null); });
 $('#restart').addEventListener('click', () => { reset(); H = []; cur = null; render('splash'); });
 
-const paso = new URLSearchParams(location.search).get('paso');
+const query = new URLSearchParams(location.search);
+const paso = query.get('paso');
+const ver = query.get('ver');
 let start = ['splash'];
+let directScreen = null;
 if (paso) {
   const m = paso.match(/^(carpeta|tienda)(?:-(\d+))?$/);
-  S.phone = '3425551234'; S.shop = 'Sabores de Casa'; S.intro = true; H = [['menu', null], ['dash', null]];
-  if (m && m[1] === 'tienda') { const n = Math.min(+m[2] || 0, 7); for (let i = 1; i < n && i <= 6; i++) S.tDone.add(i); if (n === 7) { S.open = true; S.tDone.add(6); } start = n ? ['t' + n] : ['tRoute']; if (n >= 2) { S.draft.name = 'Mermelada de naranja'; } if (n >= 3) { S.draft.photo = true; } if (n >= 4) { S.draft.price = 4500; } if (n >= 6) { S.draft.wa = S.phone; } }
-  else if (m) { const n = Math.min(+m[2] || 0, 8); for (let i = 1; i < n && i <= 7; i++) S.cDone.add(i); start = n ? ['c' + n] : ['cRoute']; H.push(['ferias', null]); }
-  else if (paso === 'links') start = ['links'];
-  else if (paso === 'panel') { H = [['menu', null]]; start = ['dash']; }
+  S.phone = '3425551234'; S.shop = 'Mora'; S.desc = 'Carteras, bolsos y accesorios hechos para acompañarte todos los días.'; S.intro = true;
+  if (m && m[1] === 'tienda') {
+    const n = Math.min(+m[2] || 0, 7);
+    for (let i = 1; i < n && i <= 6; i++) S.tDone.add(i);
+    if (n === 7) { S.open = true; S.tDone.add(6); }
+    directScreen = n ? 't' + n : 'tRoute';
+    if (n >= 2) S.draft.name = 'Mini Bag';
+    if (n >= 3) S.draft.photo = true;
+    if (n >= 4) S.draft.price = 4500;
+    if (n >= 5) S.draft.desc = 'Cartera mini de cuero, hecha a mano y pensada para llevar lo esencial.';
+    if (n >= 6) S.draft.wa = S.phone;
+  } else if (m) {
+    const n = Math.min(+m[2] || 0, 8);
+    for (let i = 1; i < n && i <= 7; i++) S.cDone.add(i);
+    directScreen = n ? 'c' + n : 'cRoute';
+  } else if (paso === 'links') directScreen = 'links';
+  else if (paso === 'panel') directScreen = 'dash';
 }
-render(...start);
+if (ver === 'tienda') {
+  S.phone = '3425551234'; S.shop = 'Mora'; S.desc = 'Carteras, bolsos y accesorios hechos para acompañarte todos los días.';
+  directScreen = 'shop';
+}
+if (directScreen) home(directScreen);
+else render(...start);
 })();
 </script>
 </body>
