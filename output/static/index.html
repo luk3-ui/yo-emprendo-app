@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yo Emprendo · App (versión actual)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#101010;--gris:#6f6f6f;--gris-c:#c4c4c4;--foco:#facc15;--bg:#ffffff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Atkinson Hyperlegible',system-ui,sans-serif;color:var(--ink);background:#e7e5e4;display:flex;gap:28px;align-items:center;justify-content:center;padding:16px;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;text-align:inherit}
+:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+.t-tienda{--f:#c5c4f9;--d:#4846b3;--h:#b4b3f4}
+.t-feria{--f:#e9c0c6;--d:#ba1650;--h:#e2adb6}
+.t-exito{--f:#bfe3cb;--d:#15803d;--h:#aad6b9}
+.t-neutro{--f:#fff;--d:#6f6f6f;--h:#f1f1f1}
+.t-teal{--f:#b7e3de;--d:#0a5c55;--h:#a2d6d0}
+.t-prodt{--f:#c3d3f6;--d:#1e40af;--h:#b0c4f0}
+.t-pedt{--f:#e3c4e8;--d:#701a75;--h:#d8afdf}
+.t-blanco{--f:#fff;--d:#0a5c55;--h:#e6f4f2}
+.t-peligro{--f:#fbd5d0;--d:#b42318;--h:#f6c0b9}
+
+/* ---------- teléfono ---------- */
+#phone{container-type:size;position:relative;width:402px;height:874px;max-height:calc(100vh - 32px);background:var(--bg);border-radius:44px;border:2px solid var(--ink);overflow:hidden;flex:none;box-shadow:-10px 10px 0 #a8a29e}
+#screen{height:100%;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;padding:26px 22px 28px 32px;gap:18px}
+#screen>*{flex:none}
+@media(max-width:520px){body{padding:0;background:var(--bg)}#phone{width:100vw;height:100vh;max-height:none;border:0;border-radius:0;box-shadow:none}#dev{display:none}}
+
+/* ---------- tipografía ---------- */
+h1{font-size:36px;line-height:1.1;font-weight:700}h1:focus,h1:focus-visible{outline:none}
+h2{font-size:28px;line-height:1.15;font-weight:700}
+.lead{font-size:22px;line-height:1.35}
+.body{font-size:20px;line-height:1.4}
+.muted{color:#4b4b4b}
+.label{font-size:22px;font-weight:700}
+
+/* ---------- botón físico: sombra dura (-10,+10) ---------- */
+.btn{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;min-height:104px;padding:14px 20px;text-align:center;font-size:32px;font-weight:700;line-height:1.1;
+  background:var(--f);border:2px solid var(--d);border-radius:20px;box-shadow:-10px 10px 0 0 var(--d);margin:0 0 10px;transition:transform .08s,box-shadow .08s,background .12s}
+.btn:hover{background:var(--h)}
+.btn:active,.btn.is-pressed{transform:translate(-10px,10px);box-shadow:none}
+.btn[disabled]{background:#ececec;border-color:#a3a3a3;color:#6f6f6f;box-shadow:-10px 10px 0 0 #cfcfcf;cursor:not-allowed}
+.btn[disabled]:active{transform:none;box-shadow:-10px 10px 0 0 #cfcfcf}
+.btn svg{width:38px;height:38px;flex:none}
+/* secundario: blanco + borde, sombra gris clara */
+.btn.sec{min-height:88px;font-size:26px;background:#fff;border-color:var(--gris);box-shadow:-10px 10px 0 0 var(--gris-c)}
+.btn.sec:hover{background:#f4f4f4}
+.btn.sec:active{box-shadow:none}
+/* chico: Volver / Ayuda */
+.btn.sm{width:auto;min-height:60px;padding:8px 18px;font-size:22px;gap:8px;border-radius:16px;box-shadow:-5px 5px 0 0 var(--d);margin:0 5px 5px 0}
+.btn.sm:active,.btn.sm.is-pressed{transform:translate(-5px,5px)}
+.btn.sm svg{width:26px;height:26px}
+.btn.sm.sec{min-height:64px;padding:8px 22px;font-size:20px;font-weight:600;gap:12px;background:#fafaf9;border:1px solid var(--ink);box-shadow:-5px 5px 0 0 var(--gris-c)}
+.btn.sm.sec:hover{background:#f1f1f1}
+.btn.sm.sec:active,.btn.sm.sec.is-pressed{box-shadow:none}
+.btn.sm.sec svg{width:28px;height:28px}
+.btn.sec[data-voice]{min-height:76px;padding:8px 32px;font-size:26px;font-weight:700;gap:14px;border-radius:16px;background:#fafaf9;border:1px solid var(--ink);box-shadow:-5px 5px 0 0 var(--gris-c);margin:12px 5px 14px 0;width:calc(100% - 5px)}
+.btn.sec[data-voice]:hover{background:#f1f1f1}
+.btn.sec[data-voice]:active,.btn.sec[data-voice].is-pressed{transform:translate(-5px,5px);box-shadow:none}
+.btn.sec[data-voice] svg{width:34px;height:34px}
+.btn.mini{min-height:72px;font-size:24px}
+
+
+.t-aviso{--f:#ffc93e;--d:#8a5a00}
+.etapa{display:block;width:100%;border:1px solid var(--d);border-radius:18px;overflow:hidden;background:#fff;text-align:left}
+.etapa .eh{display:block;background:var(--d);color:#fff;padding:12px 16px;font-size:22px;font-weight:700;line-height:1.2}
+.etapa .eb{display:flex;flex-direction:column;gap:10px;padding:12px 14px 14px}
+.etapa.hecho{--d:#15803d;background:#c1e5cf}
+.etapa.cerrada{--d:#6f6f6f;background:#efefef;border-color:#a3a3a3;color:#5a5a5a}
+.etapa .ok{display:flex;gap:8px;align-items:center;font-weight:700;font-size:18px;color:#15803d}
+.etapa .ok svg{width:22px;height:22px}
+.etapa .btn{min-height:64px;font-size:24px;box-shadow:none}
+.btn[aria-disabled=true]{background:#efefef;color:#6f6f6f;border-color:#a3a3a3;box-shadow:none;cursor:not-allowed}
+.pv{display:flex;flex-direction:column;gap:12px;padding:18px;background:#fff;border:1px solid var(--ink);border-radius:18px}
+.pv .who{display:flex;gap:16px;align-items:center}
+.pv .av{width:64px;height:64px;border-radius:50%;background:#4846b3;color:#fff;display:grid;place-items:center;font-size:30px;font-weight:700;flex:none}
+.pv .nm{display:block;font-size:24px;font-weight:700;line-height:1.2}
+.pv .ds{display:block;font-size:18px;color:#6b6b6b;line-height:1.3}
+.pv .chip{display:inline-block;align-self:flex-start;padding:10px 18px;border:1px solid #15803d;background:#c1e5cf;border-radius:14px;font-size:22px;font-weight:700}
+.pv .pimg{height:96px;border-radius:12px;background:#c3d3f6;display:grid;place-items:center;color:#1e40af}
+.pv .pimg svg{width:44px;height:44px}
+.frow{display:flex;align-items:center;gap:14px;width:100%;padding:12px 14px;background:#fff;border:1px solid #6f6f6f;border-radius:18px;margin:0 0 4px}
+.frow .pl{width:54px;height:54px;flex:none;border-radius:12px;background:var(--d);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:700}
+.frow .pl svg{width:30px;height:30px}
+.frow .ft{display:block;font-size:22px;font-weight:700;line-height:1.2}
+.frow .fs{display:block;font-size:16px;font-weight:700;color:#6f6f6f}
+.carr{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+.tipc{flex:0 0 250px;scroll-snap-align:start;border:1px solid var(--ink);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff;font-size:20px;line-height:1.4}
+.tipc b{width:48px;height:44px;border-radius:10px;background:var(--d);color:#fff;display:grid;place-items:center;font-size:24px}
+.opt small{display:block;font-weight:400;font-size:18px;color:#4b4b4b;margin-top:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bul{list-style:none;display:flex;flex-direction:column;gap:2px;font-size:20px}
+
+.card[style*="pointer-events:none"]{box-shadow:none;margin:0}
+.grid2 .card.half{box-shadow:-6px 6px 0 0 var(--sh,var(--d));margin:0 6px 6px 0;width:calc(100% - 6px);min-height:172px;font-size:20px;gap:10px;border-radius:16px;padding:12px}
+.grid2 .card.half svg{width:40px;height:40px}
+.grid2 .card.half.tall{min-height:172px}
+.grid2:has(.card.half){gap:18px 14px}
+.grid2 .card.half:active,.grid2 .card.half[aria-disabled=true]{box-shadow:none}
+.card small{max-width:300px;font-size:20px;font-weight:400;line-height:1.35}
+/* ---------- card con sombra dura ---------- */
+.card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;min-height:236px;padding:18px;text-align:center;font-size:32px;font-weight:700;line-height:1.1;
+  background:var(--f);border:1px solid var(--d);border-radius:18px;box-shadow:-10px 10px 0 0 var(--d);margin:0 0 10px;transition:transform .08s,box-shadow .08s,background .12s}
+.card:hover{background:var(--h)}
+.card:active{transform:translate(-10px,10px);box-shadow:none}
+.card svg{width:78px;height:78px}
+.card small{display:block;font-size:20px;font-weight:400;margin-top:2px}
+.card.half{min-height:178px;font-size:24px;box-shadow:none;gap:8px}
+.card.half.t-neutro{--d:var(--ink)}
+.card.half svg{width:54px;height:54px}
+.card.half:active{transform:none;background:var(--h);border-width:2px}
+.card[aria-disabled=true]{background:#ececec;border-color:#a3a3a3;box-shadow:none;color:#6f6f6f}
+.card[aria-disabled=true]:active{transform:none;box-shadow:none;background:#ececec;border-width:1px}
+.card.tall{min-height:214px}
+.up{text-transform:uppercase;font-weight:800;font-size:34px;line-height:1.22;text-align:center}
+#screen[data-k=wel] .btn{color:#1f2937}
+#screen[data-k=wel] .wtag{font-size:26px;line-height:1.35;letter-spacing:.02em}
+#screen[data-k=wel] .wlogo svg{width:min(100%,300px);height:auto;animation:wmIn 1.2s cubic-bezier(.4,0,.2,1) both}
+.sub30{font-size:30px;line-height:1.4;text-align:center}
+.wa{width:96px;height:96px;border-radius:24px;background:#0f766e;color:#fff;display:grid;place-items:center}
+.wa svg{width:56px;height:56px}
+.sec-t{font-size:24px;font-weight:700;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px}
+
+/* ---------- fila (row card) ---------- */
+.row{display:flex;align-items:center;gap:16px;width:100%;padding:16px;background:#fff;border:1px solid var(--ink);border-radius:18px;box-shadow:none;margin:0;transition:background .12s}
+.row:hover{background:var(--h)}
+.row:active{background:var(--h);border-width:2px}
+.row[aria-disabled=true]{background:#f3f3f3;border-color:#bdbdbd;color:#5a5a5a}
+.row .ttl{font-size:24px;font-weight:700;line-height:1.15}
+.row .sub{font-size:18px;color:#4b4b4b;line-height:1.25}
+.row .grow{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.iconbox{width:64px;height:64px;flex:none;border-radius:16px;background:var(--d);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:700}
+.iconbox svg{width:34px;height:34px}
+.iconbox.lock{background:#78716c}
+.iconbox.soft{background:var(--f);color:var(--ink);border:2px solid var(--d)}
+
+/* ---------- chips / pestañas ---------- */
+.pills{display:flex;gap:10px;flex-wrap:wrap}
+.pill{min-height:56px;padding:8px 20px;border-radius:999px;border:1px solid var(--ink);background:#fff;font-size:20px;font-weight:700}
+.pill[aria-pressed=true]{background:var(--f);border:2px solid var(--d)}
+
+/* ---------- campos ---------- */
+.fld{display:flex;flex-direction:column;gap:8px}
+.field{width:100%;min-height:80px;padding:12px 18px;font-size:24px;background:#fff;border:1px solid var(--ink);border-radius:16px}
+textarea.field{min-height:150px;resize:none;line-height:1.3}
+/* ---- pantallas que deben entrar sin scroll: se adaptan al alto disponible ---- */
+#screen[data-k=menu]{gap:clamp(10px,2cqh,18px);padding-top:clamp(14px,3cqh,26px);padding-bottom:clamp(14px,3cqh,28px)}
+#screen[data-k=menu] .card{flex:1 1 0;min-height:84px;max-height:236px;margin-bottom:8px;gap:clamp(6px,1.6cqh,14px);font-size:clamp(22px,3.7cqh,32px)}
+#screen[data-k=menu] .card svg{width:clamp(36px,8.5cqh,78px);height:clamp(36px,8.5cqh,78px)}
+#screen[data-k=menu] h1{font-size:clamp(26px,4.2cqh,36px)}
+#screen[data-k=onb]{gap:clamp(6px,1.7cqh,18px);padding-top:clamp(14px,3cqh,26px);padding-bottom:clamp(14px,3cqh,28px)}
+#screen[data-k=onb] h1{font-size:clamp(26px,4.2cqh,36px)}
+#screen[data-k=onb] .lead{font-size:clamp(17px,2.4cqh,22px)}
+#screen[data-k=onb] .label{font-size:clamp(17px,2.4cqh,20px)}
+#screen[data-k=onb] .fld{gap:clamp(4px,.9cqh,8px)}
+#screen[data-k=onb] .field{min-height:clamp(50px,8.4cqh,80px);padding-top:8px;padding-bottom:8px;font-size:clamp(19px,2.8cqh,24px)}
+#screen[data-k=onb] .fld:has(textarea){flex:1 1 auto;min-height:0}
+#screen[data-k=onb] #screen[data-k=login]{gap:clamp(8px,2cqh,18px);padding-top:clamp(14px,3cqh,26px);padding-bottom:clamp(14px,3cqh,28px)}
+#screen[data-k=login] .wa{width:clamp(56px,11cqh,96px);height:clamp(56px,11cqh,96px);border-radius:clamp(14px,2.8cqh,24px)}
+#screen[data-k=login] .wa svg{width:60%;height:60%}
+#screen[data-k=login] h1{font-size:clamp(26px,4.2cqh,36px)}
+#screen[data-k=login] .field{min-height:clamp(52px,8.4cqh,80px);font-size:clamp(19px,2.8cqh,24px)}
+#screen[data-k=login] .label{font-size:clamp(17px,2.4cqh,20px)}
+#screen[data-k=login] .lead,#screen[data-k=login] .body{font-size:clamp(17px,2.4cqh,22px)}
+#screen[data-k=login]>.btn{min-height:104px;font-size:32px}
+textarea.field.cmp{flex:1 1 auto;height:auto;min-height:clamp(52px,7.5cqh,92px)}
+#screen[data-k=onb] .btn.sec[data-voice]{min-height:76px;margin:2px 5px 4px 0;font-size:clamp(20px,3cqh,26px)}
+#screen[data-k=onb]>.btn{min-height:104px;font-size:clamp(24px,3.7cqh,32px);margin-bottom:6px}
+textarea.field.cmp{min-height:92px;height:92px}
+.fld:has(textarea.cmp) .btn.sec[data-voice]{margin:10px 5px 8px 0}
+.field::placeholder{color:#6b6b6b}
+.pre{display:flex;align-items:center;gap:0}
+.pre b{font-size:28px;padding:0 4px 0 0}
+.hint{display:flex;gap:12px;padding:14px 16px;border-radius:16px;background:#ffc93e;color:var(--ink);font-size:20px;line-height:1.35}
+.hint svg{width:30px;height:30px;flex:none}
+.hint.warn,.hint[data-hint]{background:#faadac;border:2px solid #5e1817}
+.hidden{display:none!important}
+
+/* ---------- opciones (checkbox/radio) ---------- */
+.opt{display:flex;align-items:center;gap:14px;width:100%;min-height:80px;padding:12px 16px;background:#fff;border:1px solid var(--ink);border-radius:16px;font-size:22px;font-weight:700;margin:0 0 4px}
+.opt .box{width:36px;height:36px;flex:none;border:3px solid var(--ink);border-radius:10px;background:#fff;display:grid;place-items:center}
+.opt.radio .box{border-radius:50%}
+.opt .box svg{width:24px;height:24px;opacity:0}
+.opt[aria-pressed=true]{background:var(--f);border:2px solid var(--d)}
+.opt[aria-pressed=true] .box{background:var(--d);border-color:var(--d);color:#fff}
+.opt[aria-pressed=true] .box svg{opacity:1}
+
+/* ---------- etiquetas ---------- */
+.tag{display:inline-block;width:fit-content;padding:3px 12px;border-radius:999px;font-size:17px;font-weight:700;border:1px solid var(--d);background:var(--f)}
+.tag.solid{background:var(--d);color:#fff}
+.tag.gray{--d:#6f6f6f;--f:#efefef}
+.tag.ok{--d:#15803d;--f:#d7efdf}
+.tag.warn{--d:#b45309;--f:#fde8c8}
+
+/* ---------- progreso ---------- */
+.prog{display:flex;gap:8px}
+.prog i{flex:1;height:14px;border-radius:7px;border:2px solid var(--d);background:#fff}
+.prog i.on{background:var(--d)}
+.prog i.now{background:var(--f)}
+.dots{display:flex;gap:10px;justify-content:center}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.dots i.on{background:var(--ink)}
+
+/* ---------- barra superior ---------- */
+.bar{display:flex;justify-content:space-between;align-items:center}
+
+/* ---------- foto ---------- */
+.photobox{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;min-height:190px;border:3px dashed var(--d);border-radius:20px;background:#fff;font-size:24px;font-weight:700;color:var(--ink)}
+.photobox svg{width:56px;height:56px}
+.photobox.has{border-style:solid;background:var(--f)}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:148px;padding:10px;border:3px dashed var(--gris);border-radius:18px;background:#fff;font-size:20px;font-weight:700;text-align:center;line-height:1.15}
+.tile svg{width:42px;height:42px}
+.tile.ok{border:2px solid var(--d);border-style:solid;background:var(--f)}
+.tile .chk{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:var(--d);color:#fff;display:grid;place-items:center}
+.tile .chk svg{width:20px;height:20px}
+.tile[aria-pressed=true]{outline:4px solid var(--foco);outline-offset:2px}
+.sw{height:148px;border-radius:18px;border:2px solid var(--ink);display:grid;place-items:center}
+.sw svg{width:54px;height:54px;opacity:.75}
+
+/* ---------- misc ---------- */
+.logo{width:150px;height:150px;border-radius:36px;background:#c5c4f9;border:2px solid #4846b3;box-shadow:-10px 10px 0 #4846b3;display:grid;place-items:center;margin:0 auto}
+.logo svg{width:84px;height:84px}
+.center{text-align:center}
+.bubble{background:#dcf8c6;border:2px solid #4d7c3a;border-radius:18px 18px 4px 18px;padding:14px 16px;font-size:20px;line-height:1.35}
+#screen>.sp{flex:1 1 auto}
+.spacer{height:4px}
+.store-hero{border:2px solid var(--d);background:var(--f);border-radius:18px;padding:18px}
+.prod{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid var(--ink);border-radius:16px;background:#fff}
+.thumb{width:72px;height:72px;border-radius:14px;background:var(--f);border:2px solid var(--d);display:grid;place-items:center;flex:none}
+.thumb svg{width:36px;height:36px}
+.qr{display:grid;gap:10px}
+.qr code{display:block;padding:10px 12px;background:#fff;border:2px solid var(--gris);border-radius:12px;font-size:16px;word-break:break-all}
+.spotl{position:absolute;inset:0;z-index:6;background:rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .4s}
+.spotl.in{opacity:1}
+.spotb{position:absolute;top:16px;left:16px;right:16px;z-index:8;display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:16px;background:#ffc93e;color:var(--ink);font-size:22px;line-height:1.35;font-weight:400;
+  transform:translateY(calc(-100% - 28px));opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .35s ease}
+.spotb.in{transform:none;opacity:1}
+.spotb svg{width:32px;height:32px;flex:none;margin-top:3px}
+.spotb span{flex:1}
+.spotb button{width:52px;height:52px;margin:-8px -8px 0 0;border:0;background:transparent;display:grid;place-items:center;flex:none;color:var(--ink)}
+.spotb button svg{width:30px;height:30px;margin:0}
+/* animación de tipografía en inicio y bienvenida */
+.aw{display:inline-block;opacity:0;transform:translateY(.08em);animation:awIn 1.2s cubic-bezier(.4,0,.2,1) forwards;animation-delay:calc(var(--i)*45ms + 80ms)}
+@keyframes awIn{to{opacity:1;transform:none}}
+#screen[data-k=splash] .center svg{animation:wmIn 1.2s cubic-bezier(.4,0,.2,1) both}
+@keyframes wmIn{from{opacity:0;transform:none}to{opacity:1;transform:none}}
+#screen[data-k=wel] .btn{animation:awIn 1.2s cubic-bezier(.4,0,.2,1) .3s both}
+@media(prefers-reduced-motion:reduce){.aw,#screen[data-k=splash] .center svg,#screen[data-k=wel] .btn{animation:none;opacity:1;transform:none}}
+/* animaciones suaves en toda la app */
+#screen.enter>*{animation:scrIn .6s cubic-bezier(.4,0,.2,1) both}
+#screen.enter>*:nth-child(2){animation-delay:.02s}#screen.enter>*:nth-child(3){animation-delay:.04s}#screen.enter>*:nth-child(n+4){animation-delay:.06s}
+@keyframes scrIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.btn{transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s cubic-bezier(.4,0,.2,1),background .3s ease,opacity .3s ease}
+.card,.row,.opt,.chip,.tile,.etapa{transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s cubic-bezier(.4,0,.2,1),background-color .3s ease,border-color .3s ease}
+.prog i,.prog span,.bars i,.bars span{transition:background-color .6s ease,transform .6s ease}
+#toast{transition:opacity .5s ease,transform .6s cubic-bezier(.4,0,.2,1)}
+@media(prefers-reduced-motion:reduce){#screen.enter>*{animation:none}.btn,.card,.row,.opt,.chip,.tile,.etapa{transition:none}}
+@media(prefers-reduced-motion:reduce){.spotb{transform:none}.spotb,.spotl{transition:opacity .2s}}
+.tips{position:absolute;left:18px;right:18px;bottom:18px;z-index:5;background:#fff;border:2px solid var(--ink);border-radius:20px;box-shadow:-8px 8px 0 var(--ink);padding:18px;display:flex;flex-direction:column;gap:12px;font-size:22px;line-height:1.35}
+#toast{position:absolute;left:24px;right:24px;bottom:24px;z-index:9;background:var(--ink);color:#fff;border-radius:16px;padding:16px 18px;font-size:20px;line-height:1.3;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}
+#toast.show{opacity:1;transform:none}
+
+/* ---------- panel de pruebas ---------- */
+body:not(.dev) #dev{display:none}
+#dev{width:260px;font-size:15px;display:flex;flex-direction:column;gap:10px}
+#dev select,#dev button{padding:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;font-size:15px}
+#dev p{color:#57534e;line-height:1.35}
+.spotb.err{background:#fbd5d5;border-color:#b91c1c;color:#7f1d1d}.spotb.err svg{color:#b91c1c}
+</style>
+</head>
+<body>
+<div id="phone"><div id="screen" role="main"></div><div id="toast" role="status" aria-live="polite"></div></div>
+<aside id="dev" aria-label="Panel de pruebas">
+  <b>Prototipo · Yo Emprendo</b>
+  <p>Diseño nuevo: sombra dura (-10, +10) solo en botones y en las cards grandes de acceso; el resto va plano con línea fina. Ayuda contextual: banner y foco oscuro.</p>
+  <label for="jump">Saltar a una pantalla</label>
+  <select id="jump"></select>
+  <button id="restart" type="button">Reiniciar la app</button>
+  <p>Enlaces de la guía física: <code>?paso=tienda-2</code> · <code>?paso=carpeta-3</code> · <code>?paso=links</code></p>
+</aside>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const digits = s => String(s).replace(/\D/g, '');
+const fmt = n => '$ ' + Number(n).toLocaleString('es-AR');
+if (/[?&]dev(=|&|$)/.test(location.search)) document.body.classList.add('dev');
+const screen = $('#screen'), phone = $('#phone');
+
+/* ---------- íconos de línea ---------- */
+const P = {
+  bag: '<path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+  shopf: '<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9v0a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5 12v8h14v-8"/><path d="M10 20v-4h4v4"/>',
+  folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/>',
+  box: '<path d="M3 8l9-5 9 5v8l-9 5-9-5V8z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+  list: '<path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
+  share: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  cam: '<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  back: '<path d="M15 5l-7 7 7 7"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17v.01"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4V5z"/>',
+  cal: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  pin: '<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"/>',
+  hand: '<path d="M8 12V6a1.5 1.5 0 0 1 3 0v5m0-1V4.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6 7s-5-2-6.5-5l-1.5-3a1.5 1.5 0 0 1 2.5-1.5L8 14"/>',
+  home: '<path d="M4 11l8-7 8 7v9H4v-9z"/><path d="M10 20v-6h4v6"/>',
+  pen: '<path d="M4 20l1-4L16 5l3 3L8 19l-4 1z"/>',
+  trash: '<path d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/>',
+  eyeoff: '<path d="M3 3l18 18M10.6 5.2A9 9 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3.2 3.9M6.3 6.6C3.6 8.4 2 12 2 12s4 7 10 7a9 9 0 0 0 4-1"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  dl: '<path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/>',
+  img: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/>',
+  wa: '<path fill="currentColor" stroke="none" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  receipt: '<path d="M5 3h14v18l-2.3-1.5L14.3 21 12 19.5 9.7 21l-2.4-1.5L5 21V3z"/><path d="M12 7v10M9.5 9.5C9.5 8.4 10.6 8 12 8s2.5.6 2.5 1.7S13.4 11.5 12 12s-2.5.9-2.5 2.3S10.6 16 12 16s2.5-.4 2.5-1.5"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',
+};
+const ic = (k, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${P[k] || ''}</svg>`;
+
+/* ---------- estado ---------- */
+let S, H = [], cur = null, curArg = null, TM;
+function reset() {
+  S = {
+    phone: '', shop: '', desc: '', open: false, tStep: 1,
+    draft: { photo: false, name: '', price: '', desc: '', shop: '', wa: '', ped: new Set(['Por WhatsApp']) },
+    prods: [
+      { id: 1, name: 'Mermelada de naranja', price: 4500, desc: 'Hecha en casa, frasco de 350 g.', hidden: false },
+      { id: 2, name: 'Bufanda tejida', price: 12000, desc: 'Lana natural, tejida a mano.', hidden: false },
+      { id: 3, name: 'Jabón artesanal', price: 3200, desc: '', hidden: false },
+      { id: 4, name: 'Vela de soja', price: 6800, desc: '', hidden: true },
+    ],
+    nextId: 5, pf: 'todos', prod: 1, editing: null, pdraft: null,
+    orders: [{ id: 1, who: 'María G.', first: 'María', what: '2 × Mermelada de naranja', total: 9000, st: 'Nuevo' }, { id: 2, who: 'Carlos P.', first: 'Carlos', what: '1 × Bufanda tejida', total: 12000, st: 'Para entregar' }, { id: 3, who: 'Lucía F.', first: 'Lucía', what: '3 × Jabón artesanal', total: 9600, st: 'Entregado' }],
+    of: 'todos', order: 1,
+    cDone: new Set(), intro: false, logo: null, brandLine: '', photos: new Set(), how: '', dif: new Set(), story: '', why: '', who: '', brand: '', tDone: new Set(), tipsSeen: false, shareKind: 'tienda', shareProd: 1, contact: null, notice: '', pcText: '', pcPhoto: false,
+    picked: null, pickFor: null, share: 'wa', where: 'persona', enrolled: false, fair: 1,
+  };
+}
+reset();
+const prod = id => S.prods.find(p => p.id === +id);
+
+/* ---------- ayuda ---------- */
+const TIPS = {
+  login: 'Escribí tu número de WhatsApp y tocá «Mandarme el código».',
+  menu: 'Tocá «Mi Tienda Digital» para manejar tus productos y pedidos, o «Postularme a una feria» para armar tu carpeta.',
+  dash: 'Acá está todo lo de tu tienda. Si todavía no la armaste, tocá «Armar mi tienda».',
+  pick: 'Tocá la foto que quieras y después «Usar esta foto».',
+  cRoute: 'Cada etapa es un paso. Si una está cerrada, primero terminá la anterior.',
+  _field: 'Escribí lo que te pide o tocá «Hablar». Después tocá el botón de abajo.',
+  _def: 'Tocá el botón grande para seguir. Si te equivocás, tocá «Volver».',
+};
+const FIELD_SCREENS = ['pnew', 'onb', 't1', 't3', 't4', 't6', 'pedit', 'c1', 'c3', 'c4', 'c5', 'c7'];
+
+/* ---------- piezas de UI ---------- */
+const bar = (o = {}) => `<div class="bar">${o.noBack ? '<span></span>' : `<button type="button" class="btn sm sec" data-act="back">${ic('back')}Volver</button>`}<button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div>`;
+const prog = (n, total, tone, nl) => `<div class="${tone ? 't-' + tone : ''}"><div class="prog" role="img" aria-label="Paso ${n} de ${total}">${Array.from({ length: total }, (_, i) => `<i class="${i + 1 < n ? 'on' : i + 1 === n ? 'now' : ''}"></i>`).join('')}</div>${nl ? '' : `<p class="body muted" style="margin-top:8px">Paso ${n} de ${total}</p>`}</div>`;
+const OWNER = 'Elsa';
+const etapaCard = (i, title, st, detail, act, arg) => `<div class="etapa ${st}"><span class="eh">${i}. ${title}</span><div class="eb">${st === 'hecho' ? `<span class="ok">${ic('check')}Hecho</span>` : `<span class="body">${detail}</span>`}${st === 'hecho' ? btn('Cambiar', act, { sec: true, icon: 'pen', keep: true, arg }) : st === 'ahora' ? btn('Empezar →', act, { sec: true, arg }) : `<button type="button" class="btn sec" data-act="${act}" data-arg="${arg}" aria-disabled="true">${ic('lock')}Cerrada</button>`}</div></div>`;
+const CLOSED = 'Se desbloquea una vez que completes la etapa anterior';
+const pvHtml = () => { const sh = S.shop || 'Sabores de Casa', ds = S.desc || 'Dulces y conservas caseras'; if (S.shareKind === 'prod') { const p = prod(S.shareProd) || S.prods[0]; return `<div class="pv"><span class="pimg">${ic('img')}</span><span><span class="nm">${esc(p.name)} · ${fmt(p.price)}</span><span class="ds">De ${esc(sh)}</span></span><span class="chip">Pedímelo acá</span></div>`; } return `<div class="pv"><div class="who"><span class="av">${esc(sh[0].toUpperCase())}</span><span><span class="nm">${esc(sh)}</span><span class="ds">${esc(ds)}</span></span></div><span class="chip">Pedime por acá</span></div>`; };
+const eyebrow = t => `<p class="body muted">${t}</p>`;
+const isProd = () => S.shareKind === 'prod';
+const shName = () => isProd() ? esc((prod(S.shareProd) || S.prods[0]).name) : 'tu tienda';
+const btn = (label, act, o = {}) => `<button type="button" class="btn ${o.sec ? 'sec' : ''} ${o.cls || ''} ${o.tone ? 't-' + o.tone : ''}" data-act="${act}" ${o.arg !== undefined ? `data-arg="${o.arg}"` : ''} ${o.dis ? 'disabled' : ''}>${o.icon && o.keep ? ic(o.icon) : ''}${label}</button>`;
+const field = (id, label, o = {}) => {
+  const inp = o.area ? `<textarea id="${id}" class="field${o.compact ? ' cmp' : ''}" placeholder="${esc(o.ph || '')}" ${o.max ? `maxlength="${o.max}"` : ''}>${esc(o.v || '')}</textarea>`
+    : `<input id="${id}" class="field" ${o.tel ? 'type="tel" inputmode="numeric"' : o.num ? 'type="text" inputmode="numeric"' : 'type="text"'} placeholder="${esc(o.ph || '')}" value="${esc(o.v || '')}" autocomplete="off">`;
+  return `<div class="fld"><label class="label" for="${id}">${label}</label>${o.pre ? `<div class="pre"><b>$</b>${inp}</div>` : inp}${o.voice === false ? '' : `<button type="button" class="btn sec" data-voice="${id}">${ic('mic')}<span data-vl>Hablar</span></button>`}<div class="hint warn hidden" data-hint="${id}">${ic('info')}<span>${o.err || 'Completá este dato para seguir.'}</span></div></div>`;
+};
+const opt = (label, pressed, arg, o = {}) => `<button type="button" class="opt ${o.radio ? 'radio' : ''}" data-opt="${arg}" aria-pressed="${!!pressed}"><span class="box">${ic('check')}</span><span>${label}</span></button>`;
+const hero = (title, sub) => `<div><h1 tabindex="-1">${title}</h1>${sub ? `<p class="lead muted" style="margin-top:10px">${sub}</p>` : ''}</div>`;
+const tagFor = st => ({ 'Nuevo': 'warn', 'Para entregar': 'ok', 'Entregado': 'gray', Visible: 'ok', Oculto: 'gray' }[st] || 'gray');
+
+/* ---------- pantallas ---------- */
+const R = {};
+/* entrada (proceso original, color teal) */
+const WM = `<svg role="img" aria-label="Yo Emprendo!" viewBox="0 0 306 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:316px;max-width:80%;height:auto">
+<path d="M59.7975 18.3011V24.5395H71.3974V32.0122H59.7975V39.2754H78.8324V46.748H51.3496V46.3688C52.869 45.2761 54.1637 43.8835 55.2218 42.2079C56.7638 39.7509 57.5462 36.6713 57.5462 33.0595C57.5462 29.4081 56.7638 26.3285 55.2105 23.9055C54.1579 22.2582 52.8635 20.8882 51.3496 19.8182V10.8228H78.8324V18.3011H59.7975Z" fill="white"/>
+<path d="M81.4082 46.75V20.0749H88.5194L89.5354 23.6244C90.1411 22.6209 91.1396 21.6529 92.5296 20.7203C93.9199 19.7885 95.5949 19.3219 97.5558 19.3219C99.6587 19.3219 101.343 19.6984 102.609 20.4514C103.874 21.2043 104.809 22.3161 105.416 23.7857C106.449 22.3161 107.759 21.2043 109.346 20.4514C110.932 19.6984 112.652 19.3219 114.505 19.3219C117.892 19.3219 120.227 20.2817 121.51 22.1991C122.793 24.1178 123.435 26.8875 123.435 30.5084V46.75H115.307V32.5519C115.307 31.2972 115.236 30.1503 115.094 29.11C114.951 28.0706 114.594 27.2369 114.024 26.6092C113.454 25.9822 112.509 25.6679 111.19 25.6679C109.55 25.6679 108.357 26.2512 107.608 27.416C106.86 28.5813 106.485 30.3291 106.485 32.6594V46.75H98.3044V32.5519C98.3044 31.2972 98.2418 30.1503 98.1172 29.11C97.9919 28.0706 97.6536 27.2369 97.1012 26.6092C96.5483 25.9822 95.6309 25.6679 94.3478 25.6679C92.6717 25.6679 91.4513 26.2783 90.685 27.4967C89.918 28.716 89.5354 30.4906 89.5354 32.8208V46.75H81.4082Z" fill="white"/>
+<path d="M139.873 41.049C141.441 41.049 142.804 40.4036 143.963 39.1128C145.121 37.8221 145.701 35.9223 145.701 33.4122C145.701 30.9744 145.121 29.0745 143.963 27.7115C142.804 26.3494 141.441 25.6676 139.873 25.6676C138.269 25.6676 136.887 26.2418 135.729 27.3886C134.57 28.5367 133.991 30.4904 133.991 33.2507C133.991 35.976 134.57 37.9565 135.729 39.1935C136.887 40.4304 138.269 41.049 139.873 41.049ZM126.238 55.4082V20.0746H133.296L134.365 23.7317C135.221 22.2619 136.424 21.1595 137.975 20.4243C139.525 19.6898 141.013 19.3216 142.439 19.3216C144.72 19.3216 146.744 19.8957 148.508 21.0426C150.273 22.1905 151.654 23.8123 152.652 25.9099C153.649 28.0073 154.148 30.5081 154.148 33.4122C154.148 36.3163 153.649 38.817 152.652 40.9145C151.654 43.0119 150.273 44.6168 148.508 45.7277C146.744 46.8387 144.72 47.3952 142.439 47.3952C141.013 47.3952 139.525 47.0187 137.975 46.2657C136.424 45.5127 135.221 44.4018 134.365 42.9312V55.4082H126.238Z" fill="white"/>
+<path d="M156.41 46.75V20.0749H162.827L164.271 24.9688C165.09 22.8177 166.213 21.3118 167.64 20.4514C169.065 19.5908 170.794 19.2143 172.825 19.3219V27.4967C172.398 27.4252 172.024 27.3806 171.703 27.362C171.381 27.3444 171.026 27.3354 170.634 27.3354C168.673 27.3354 167.166 27.8015 166.115 28.7335C165.063 29.6663 164.537 31.1897 164.537 33.3049V46.75H156.41Z" fill="white"/>
+<path d="M182.033 30.6149H194.116C194.081 28.8939 193.492 27.5947 192.352 26.7157C191.211 25.8379 189.857 25.3984 188.288 25.3984C186.755 25.3984 185.391 25.8108 184.198 26.6353C183.003 27.4605 182.282 28.7865 182.033 30.6149ZM188.396 47.3945C185.543 47.3945 183.022 46.8297 180.829 45.7002C178.638 44.5709 176.926 42.9492 175.696 40.8331C174.466 38.7182 173.852 36.1903 173.852 33.25C173.852 30.4184 174.501 27.9621 175.804 25.8824C177.104 23.8034 178.833 22.1899 180.99 21.042C183.146 19.895 185.508 19.321 188.074 19.321C190.996 19.321 193.501 20.0117 195.586 21.3916C197.673 22.7723 199.249 24.6722 200.319 27.0922C201.388 29.5125 201.834 32.3005 201.656 35.4551H182.033C182.174 37.3198 182.862 38.7182 184.092 39.65C185.321 40.5826 186.684 41.0484 188.182 41.0484C189.429 41.0484 190.507 40.8602 191.416 40.4837C192.325 40.1072 193.029 39.6324 193.529 39.0585L199.998 41.4249C198.608 43.4685 196.87 44.9744 194.785 45.9425C192.7 46.9105 190.57 47.3945 188.396 47.3945Z" fill="white"/>
+<path d="M203.385 46.75V20.0749H210.497L211.512 23.6244C212.118 22.6209 213.125 21.6529 214.534 20.7203C215.941 19.7885 217.662 19.3219 219.693 19.3219C223.116 19.3219 225.459 20.2817 226.724 22.1991C227.99 24.1178 228.622 26.8875 228.622 30.5084V46.75H220.495V32.5519C220.495 31.2972 220.423 30.1503 220.282 29.11C220.138 28.0706 219.791 27.2369 219.239 26.6092C218.685 25.9822 217.75 25.6679 216.431 25.6679C214.72 25.6679 213.472 26.2865 212.689 27.5235C211.904 28.7606 211.512 30.5982 211.512 33.0359V46.75H203.385Z" fill="white"/>
+<path d="M245.316 41.0484C246.884 41.0484 248.248 40.4566 249.406 39.2735C250.565 38.0905 251.144 36.1191 251.144 33.3579C251.144 30.6335 250.565 28.6703 249.406 27.4687C248.248 26.268 246.884 25.667 245.316 25.667C243.712 25.667 242.331 26.3124 241.172 27.6034C240.014 28.8939 239.434 30.7587 239.434 33.1964C239.434 35.6704 240.014 37.5978 241.172 38.9777C242.331 40.3586 243.712 41.0484 245.316 41.0484ZM242.697 47.3945C240.415 47.3945 238.392 46.8203 236.628 45.6736C234.864 44.5264 233.481 42.8861 232.484 40.7526C231.486 38.6199 230.986 36.1005 230.986 33.1964C230.986 30.2923 231.486 27.8099 232.484 25.7477C233.481 23.6865 234.864 22.1001 236.628 20.9883C238.392 19.8775 240.415 19.321 242.697 19.321C244.158 19.321 245.654 19.6891 247.189 20.4237C248.72 21.1589 249.915 22.2613 250.77 23.731V10.8238H258.897V36.3156C258.897 37.6427 258.96 39.2199 259.085 41.0484C259.209 42.8769 259.45 44.7775 259.806 46.7491H252.054L250.984 43.1457C249.878 44.6877 248.586 45.781 247.107 46.4264C245.628 47.0717 244.158 47.3945 242.697 47.3945Z" fill="white"/>
+<path d="M281.005 39.2766C279.92 40.4597 278.552 41.0485 276.914 41.0485C275.276 41.0485 273.902 40.4597 272.799 39.2766C271.69 38.0935 271.138 36.1008 271.138 33.3041C271.138 30.4736 271.702 28.4922 272.827 27.36C273.947 26.2334 275.31 25.6673 276.914 25.6673C278.483 25.6673 279.829 26.2334 280.954 27.36C282.075 28.4922 282.637 30.4736 282.637 33.3041C282.637 36.1008 282.092 38.0935 281.005 39.2766ZM290.843 31.4247L289.329 31.2152L289.29 29.2848L289.217 25.8089C289.127 25.6617 289.036 25.5144 288.948 25.373C287.625 23.3123 285.897 21.7895 283.758 20.7988C281.619 19.8138 279.34 19.3213 276.914 19.3213C274.454 19.3213 272.158 19.8138 270.019 20.7988C267.88 21.7895 266.146 23.3123 264.829 25.373C263.512 27.4335 262.854 30.0773 262.854 33.3041C262.854 36.4971 263.512 39.1407 264.829 41.2354C266.146 43.3356 267.88 44.8867 270.019 45.8887C272.158 46.8908 274.454 47.3945 276.914 47.3945C279.34 47.3945 281.619 46.8908 283.758 45.8887C284.534 45.5264 285.255 45.0906 285.918 44.5867C285.057 42.9449 284.76 41.1617 285.024 39.2653C285.373 36.7743 286.561 34.7704 288.559 33.3098C289.302 32.7664 290.078 32.3531 290.888 32.0587C290.877 31.8436 290.861 31.6342 290.843 31.4247Z" fill="white"/>
+<path d="M305.855 1.86116L304.205 13.6928L298.942 30.5176L291.395 29.4533L291.012 11.8247L292.667 -0.00132751L305.855 1.86116Z" fill="white"/>
+<path d="M300.366 41.6655C300.107 43.4942 299.241 44.9717 297.767 46.1151C296.562 47.0435 295.245 47.5078 293.815 47.5078C293.495 47.5078 293.168 47.4852 292.836 47.4398C291.018 47.1794 289.549 46.2963 288.417 44.7904C288.029 44.2753 287.725 43.7376 287.506 43.1828C287.072 42.1241 286.937 40.9975 287.106 39.7974C287.371 37.9236 288.244 36.4461 289.74 35.3535C290.066 35.1157 290.399 34.9062 290.742 34.7364C291.665 34.2608 292.644 34.0288 293.68 34.0288C294.012 34.0288 294.35 34.0571 294.694 34.1024C296.505 34.3571 297.975 35.2175 299.082 36.6782C300.197 38.133 300.625 39.7974 300.366 41.6655Z" fill="white"/>
+<path d="M45.3779 39.0324C44.2916 40.2157 42.9295 40.8044 41.2861 40.8044C39.6484 40.8044 38.2748 40.2157 37.1717 39.0324C36.0686 37.8493 35.5116 35.8566 35.5116 33.06C35.5116 30.2295 36.0743 28.2481 37.2 27.1215C38.3198 25.9893 39.6819 25.4231 41.2861 25.4231C42.8563 25.4231 44.2016 25.9893 45.3272 27.1215C46.4472 28.2481 47.0099 30.2295 47.0099 33.06C47.0099 35.8566 46.4641 37.8493 45.3779 39.0324ZM53.3196 25.1289C52.7397 24.223 52.0866 23.4249 51.3497 22.7285C50.4039 21.8341 49.3289 21.1151 48.1301 20.5604C45.9911 19.5753 43.7119 19.0771 41.2861 19.0771C38.8266 19.0771 36.5303 19.5753 34.3914 20.5604C32.2527 21.5454 30.5249 23.0682 29.2022 25.1289C27.885 27.1894 27.2266 29.8332 27.2266 33.06C27.2266 36.2529 27.885 38.8966 29.2022 40.9968C30.5249 43.0915 32.2527 44.6426 34.3914 45.6446C36.5303 46.6523 38.8266 47.1504 41.2861 47.1504C43.7119 47.1504 45.9911 46.6523 48.1301 45.6446C49.3289 45.0842 50.4039 44.3482 51.3497 43.4425C52.0866 42.7292 52.7397 41.9139 53.3196 40.9968C54.6364 38.8966 55.2949 36.2529 55.2949 33.06C55.2949 29.8332 54.6364 27.1894 53.3196 25.1289Z" fill="white"/>
+<path d="M13.5759 46.5938V32.6709L0 10.8234H9.796L17.7285 24.5856L25.661 10.8234H35.5101L21.9344 32.6709V46.5938H13.5759Z" fill="white"/>
+</svg>`;
+R.splash = () => ({ html: `<div class="sp"></div><div class="center">${WM}</div><div class="sp"></div>`, bg: '#0f766e', auto: ['wel', 1700, 1] });
+R.wel = () => ({ html: `<div class="sp"></div><div class="center wlogo">${WM}</div><div class="sp"></div>${btn('Empecemos', 'welNext', { tone: 'blanco', arg: 1 })}<div class="sp"></div><h1 class="up wtag" tabindex="-1">Tu emprendimiento, listo para vender.</h1><div class="sp"></div>`, bg: '#0f766e', fg: '#fff' });
+R.login = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div><h1 tabindex="-1">Entrá con tu número de WhatsApp</h1>${field('tel', 'Tu número de WhatsApp', { tel: true, ph: '342 555-1234', v: S.phone, voice: false, err: 'Revisá el número: tiene que tener al menos 8 cifras.' })}<p class="lead muted">Te mando un código por WhatsApp.</p><div class="sp"></div>${btn('Mandarme el código', 'login', { tone: 'teal' })}`, kind: 'login' });
+R.onb = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div>${hero('Contanos sobre tu emprendimiento', 'Así te van a conocer en tu tienda y en las ferias')}${field('shop', '¿Cómo se llama tu emprendimiento?', { ph: 'Ej: Dulces de Elsa', v: S.shop, voice: false, err: 'Escribí el nombre de tu emprendimiento.' })}${field('desc', 'Contanos brevemente qué vendés', { wide: true, compact: true, area: true, ph: 'Ej: Mermeladas caseras sin conservantes', v: S.desc, err: '' })}<div class="sp"></div>${btn('Empezar a usar mi app', 'onbSave', { tone: 'teal' })}` });
+R.menu = () => ({ html: `<div class="bar"><span></span><button type="button" class="btn sm sec" data-act="help" aria-label="Ayuda">${ic('help')}Ayuda</button></div><h1 tabindex="-1">Mi emprendimiento</h1>
+  <button type="button" class="card t-tienda" data-act="toTienda">${ic('bag')}Mi Tienda Digital</button>
+  <button type="button" class="card t-feria" data-act="toFerias">${ic('folder')}Postularme a una feria</button>`, kind: 'menu' });
+
+/* tienda: 4 pasos */
+const TT = 'tienda';
+const TH = ['Cargá el nombre de tu producto.', 'Sumá una foto clara.', 'Poné cuánto cuesta tu producto.', 'Contá cómo es (es opcional).', 'Elegí cómo recibís los pedidos.', 'Dejá tu WhatsApp y abrí tu tienda.'], TN = ['Mis productos', 'Mis fotos', 'Mis precios', 'Mis descripciones', 'Mis pedidos', 'Mis datos de contacto'];
+R.tRoute = () => { const n = S.tDone.size; return { html: `${bar()}${hero('Armá tu tienda', n ? `${n} de 6 pasos listos.` : 'Son 6 pasos cortos.')}${prog(Math.min(n + 1, 7), 6, TT, true)}<div class="t-tienda" style="display:flex;flex-direction:column;gap:14px">${TN.map((t, i) => { const k = i + 1, done = S.tDone.has(k), open = k === 1 || S.tDone.has(k - 1) || done; return etapaCard(k, t, done ? 'hecho' : open ? 'ahora' : 'cerrada', open ? TH[i] : CLOSED, 'tStage', k); }).join('')}</div>` }; };
+R.t1 = () => ({ html: `${bar()}${prog(1, 6, TT)}${hero('Mis productos', 'Empezá con un producto. Después podés sumar más.')}${field('pname', 'Nombre del producto', { ph: 'Ej: Mermelada de naranja', v: S.draft.name })}<div class="sp"></div>${btn('Seguir', 'tNext', { tone: TT, arg: 1 })}` });
+R.t2 = () => ({ html: `${bar()}${prog(2, 6, TT)}${hero('Mis fotos', 'Una foto clara de tu producto.')}<button type="button" class="photobox t-${TT} ${S.draft.photo ? 'has' : ''}" data-act="pickPhoto" data-arg="prod">${S.draft.photo ? ic('check') + 'Foto lista · tocá para cambiar' : ic('cam') + 'Tocá para sacar o subir una foto'}</button><div class="sp"></div>${btn('Seguir', 'tNext', { tone: TT, arg: 2 })}` });
+R.t3 = () => ({ html: `${bar()}${prog(3, 6, TT)}${hero('Mis precios', 'Si no sabés el precio exacto, poné uno aproximado.')}${field('pprice', 'Precio', { num: true, pre: true, ph: 'Ej: 4500', v: S.draft.price, voice: true, err: 'Escribí el precio con números.' })}<div class="sp"></div>${btn('Seguir', 'tNext', { tone: TT, arg: 3 })}` });
+R.t4 = () => ({ html: `${bar()}${prog(4, 6, TT)}${hero('Mis descripciones', 'Es opcional. Contá cómo es tu producto.')}${field('pdesc', 'Descripción (opcional)', { area: true, ph: 'Ej: Hecha a mano, con frutas de la zona.', v: S.draft.desc, err: '' })}<div class="sp"></div>${btn('Seguir', 'tNext', { tone: TT, arg: 4 })}` });
+R.t5 = () => ({ html: `${bar()}${prog(5, 6, TT)}${hero('Mis pedidos', '¿Cómo querés recibir los pedidos?')}<div class="t-${TT}">${['Por WhatsApp', 'Retiro en persona', 'Hago envíos'].map(d => opt(d, S.draft.ped.has(d), 'ped:' + d)).join('')}</div><div class="sp"></div>${btn('Seguir', 'tNext', { tone: TT, arg: 5 })}` });
+R.t6 = () => ({ html: `${bar()}${prog(6, 6, TT)}${hero('Mis datos de contacto', 'El WhatsApp donde te van a escribir.')}${field('wa', 'WhatsApp para pedidos', { tel: true, ph: 'Ej: 3425551234', v: S.draft.wa || S.phone, voice: false, err: 'Escribí tu número con código de área.' })}<div class="sp"></div>${btn('Abrir mi tienda', 'tNext', { tone: 'exito', arg: 6 })}` });
+R.t7 = () => ({ html: `<div class="sp"></div><div class="card t-exito" style="pointer-events:none;min-height:420px">${ic('bag')}¡Tu tienda está abierta!<small>Ya la pueden ver tus clientes. Podés compartirla cuando quieras.</small></div><div class="sp"></div>${btn('Compartir mi tienda', 'toShare', { tone: TT })}${btn('Ver mi tienda', 'toShop', { sec: true })}`, transient: true });
+const slug = () => (S.shop || 'mi-tienda').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/* panel de la tienda: va ANTES de los pasos */
+R.dash = () => { const op = S.open, dis = op ? '' : 'aria-disabled="true"';
+  const SH = { tienda: '#4846b3', prodt: '#1e40af', pedt: '#701a75' };
+  const tile = (tone, icon, label, act, sh) => `<button type="button" class="card half tall t-${tone}" ${sh ? `style="--sh:${SH[sh]}"` : ''} data-act="${op ? act : 'locked'}" ${dis}>${ic(op ? icon : 'lock')}${label}</button>`;
+  const first = S.tDone.size === 0;
+  const top = op ? `<span class="tag ok">Tienda abierta</span>` : `<div class="hint t-tienda">${ic('info')}<span>Primero armá tu tienda. Son 6 pasos cortos.</span></div>${btn(first ? 'Armar mi tienda' : `Seguir con mi tienda · ${S.tDone.size} de 6`, 'toSteps', { tone: 'tienda', icon: 'bag' })}`;
+  return { html: `${bar()}<h1 tabindex="-1">Mi tienda</h1>${top}
+  <p class="sec-t">Tienda</p><div class="grid2">${tile('tienda', 'eye', 'Ver tienda', 'toShop', 'tienda')}${tile('neutro', 'share', 'Compartir tienda', 'toShare', 'tienda')}</div>
+  <p class="sec-t">Productos</p><div class="grid2">${tile('prodt', 'box', 'Cargar producto', 'newProd', 'prodt')}${tile('neutro', 'list', 'Ver mis productos', 'toProds', 'prodt')}</div>
+  <p class="sec-t">Pedidos</p><div class="grid2">${tile('pedt', 'receipt', 'Ver mis pedidos', 'toOrders', 'pedt')}${tile('neutro', 'phone', 'Contactar cliente', 'toClientes', 'pedt')}</div>`, kind: 'dash' }; };
+R.clientes = () => ({ html: `${bar()}${hero('Contactar cliente', 'Elegí a quién querés escribirle.')}<ul style="list-style:none;display:flex;flex-direction:column;gap:14px">${S.orders.map(o => `<li><button type="button" class="row t-pedt" data-act="cliente" data-arg="${o.id}"><span class="iconbox">${S.orders.indexOf(o) + 1}</span><span class="grow"><span class="ttl">${o.who}</span><span class="sub">${o.what}</span><span class="tag">Cliente</span></span></button></li>`).join('')}</ul>` });
+R.cliente = () => { const o = S.orders.find(x => x.id === S.order); return { html: `${bar()}${hero(o.who, 'Último pedido: ' + o.what)}<div class="sp"></div>${btn('Escribirle por WhatsApp', 'notify', { tone: 'exito', icon: 'chat', arg: o.id })}${btn('Llamar', 'call', { sec: true, icon: 'phone' })}` }; };
+R.shop = () => ({ html: `${bar()}<div class="store-hero t-tienda"><h1 style="font-size:30px">${esc(S.shop || 'Mi tienda')}</h1><p class="body" style="margin-top:6px">${esc(S.desc || 'Hecho a mano, con cariño')}</p></div><h2>Productos</h2><div style="display:flex;flex-direction:column;gap:12px" class="t-tienda">${S.prods.filter(p => !p.hidden).map(p => `<div class="row" style="pointer-events:none"><span class="iconbox">${S.prods.indexOf(p) + 1}</span><span class="grow"><span class="ttl">${esc(p.name)}</span><span class="sub">${fmt(p.price)}</span><span class="tag ok">Visible</span></span></div>`).join('') || '<p class="lead">Todavía no hay productos visibles.</p>'}</div><p class="body muted center">Así la ven tus clientes.</p>` });
+
+/* compartir */
+R.share = () => ({ html: `${bar()}${hero('Compartir mi tienda', '¿Por dónde querés mandar el link?')}${btn('WhatsApp', 'shareVia', { tone: 'exito', icon: 'chat', arg: 'wa' })}${btn('Instagram', 'shareVia', { sec: true, icon: 'share', arg: 'ig' })}${btn('Copiar el link', 'copy', { sec: true, icon: 'link' })}` });
+R.shareWa = () => ({ html: `${bar()}${hero('WhatsApp', '¿A quién se lo mandás?')}<div class="t-exito" style="display:flex;flex-direction:column;gap:6px">${opt('A una persona', S.where === 'persona', 'where:persona', { radio: true })}${opt('A un grupo', S.where === 'grupo', 'where:grupo', { radio: true })}</div><p class="label">Mensaje que va a salir:</p><div class="bubble">¡Hola! Mirá mi tienda ${esc(S.shop || '')}: yoemprendo.app/${slug()}</div><div class="sp"></div>${btn('Abrir WhatsApp', 'shareSend', { tone: 'exito', icon: 'chat' })}` });
+R.shareIg = () => ({ html: `${bar()}${hero('Instagram', 'Copiá el link y pegalo en tu perfil.')}<div class="hint t-tienda">${ic('info')}<span>1) Tocá «Copiar el link».<br>2) Abrí Instagram → Editar perfil → Sitio web.<br>3) Pegalo y guardá.</span></div><div class="sp"></div>${btn('Copiar el link', 'copy', { tone: 'tienda', icon: 'link' })}${btn('Ya lo pegué', 'shareSent', { sec: true })}` });
+R.shareHome = () => { const vis = S.prods.filter(p => !p.hidden), sh = S.shop || 'Sabores de Casa';
+  return { html: `${bar()}${hero('Así ven tu tienda')}<div class="pv"><div class="who"><span class="av">${esc(sh[0].toUpperCase())}</span><span><span class="nm">${esc(sh)}</span><span class="ds">${esc(S.desc || 'Dulces y conservas caseras')}</span></span></div><span class="chip">Pedime por acá</span></div>${vis.length ? `<div style="display:flex;flex-direction:column;gap:10px" class="t-tienda">${vis.map(p => `<div class="row" style="pointer-events:none"><span class="iconbox">${S.prods.indexOf(p) + 1}</span><span class="grow"><span class="ttl">${esc(p.name)}</span><span class="sub">${fmt(p.price)}</span></span></div>`).join('')}</div>` : '<p class="body">Todavía no mostrás productos en tu tienda.</p>'}<div class="sp"></div>${btn('Compartir un producto', 'shareProdStart', { sec: true })}${btn('Compartir tienda', 'shareStart', { tone: 'tienda' })}` }; };
+R.pickProd = () => ({ html: `${bar()}${eyebrow('Paso 1 de 3')}${hero('¿Qué producto querés compartir?')}<ul style="list-style:none;display:flex;flex-direction:column;gap:14px" class="t-tienda">${S.prods.filter(p => !p.hidden).map(p => `<li><button type="button" class="row" data-act="pickProdGo" data-arg="${p.id}"><span class="iconbox">${S.prods.indexOf(p) + 1}</span><span class="grow"><span class="ttl">${esc(p.name)}</span><span class="sub">${fmt(p.price)}</span></span></button></li>`).join('') || '<li><p class="lead">No hay productos visibles.</p></li>'}</ul><p class="body muted">Tocá uno: se marca y seguís.</p>` });
+R.shareWhere = () => ({ html: `${bar()}${eyebrow(isProd() ? 'Paso 2 de 3' : 'Paso 1 de 2')}${hero(isProd() ? `¿Dónde querés mostrar «${shName()}»?` : '¿Dónde querés mostrar tu tienda?')}<div class="t-tienda" style="display:flex;flex-direction:column;gap:6px">${opt('A una persona o grupo<small>Le llega por mensaje y lo puede guardar.</small>', S.where !== 'estado', 'where:persona', { radio: true })}${opt('En tu estado<small>Lo ven todos tus contactos durante un día. Después se borra solo.</small>', S.where === 'estado', 'where:estado', { radio: true })}</div><div class="sp"></div>${btn('Seguir', 'shareNext', { tone: 'tienda' })}` });
+R.shareView = () => { const est = S.where === 'estado'; return { html: `${bar()}${eyebrow(isProd() ? 'Paso 3 de 3' : 'Paso 2 de 2')}${hero(est ? 'Así se va a ver en tu estado' : isProd() ? 'Así lo van a ver' : 'Así la van a ver tus contactos')}${pvHtml()}${est ? '' : `<p class="body">Se va a abrir WhatsApp. Ahí elegís a quién ${isProd() ? 'se lo' : 'se la'} mandás.</p>`}<div class="sp"></div>${btn(est ? 'Ponerlo en mi estado' : 'Compartir por WhatsApp', 'waGo', { tone: 'exito' })}${btn('Ahora no', 'back', { sec: true })}` }; };
+R.waPick = () => ({ html: `${bar()}${hero('WhatsApp')}<div class="hint">${ic('info')}<span>Prototipo · simulado</span></div><p class="body">Elegí a quién ${isProd() ? 'se lo' : 'se la'} mandás y tocá Enviar.</p><div class="t-tienda" style="display:flex;flex-direction:column;gap:6px">${['Grupo del barrio', 'Rosa', 'Familia', 'Tito'].map(c => opt(c, S.contact === c, 'ct:' + c)).join('')}</div><div class="sp"></div>${btn('Enviar', 'waSend', { tone: 'exito', dis: !S.contact })}` });
+R.waStatus = () => ({ html: `${bar()}${hero('WhatsApp · Estado')}<div class="hint">${ic('info')}<span>Prototipo · simulado</span></div><p class="body">Tocá Enviar para ponerlo en tu estado</p>${pvHtml()}<div class="sp"></div>${btn('Enviar', 'waSend', { tone: 'exito' })}` });
+R.shareAsk = () => ({ html: `${bar()}<div class="wa">${ic('wa')}</div>${hero(isProd() ? `¿Pudiste compartir ${shName()}?` : '¿Pudiste compartir tu tienda?', 'Volviste de WhatsApp. Contame cómo te fue.')}<div class="sp"></div>${btn('Sí, lo compartí', 'shareYes', { tone: 'exito' })}${btn('No pude', 'shareNo', { sec: true })}`, transient: true });
+R.shareFail = () => ({ html: `<div class="sp"></div><div class="card t-aviso" style="pointer-events:none;min-height:200px">${ic('info')}No pasa nada. Sigue todo en tu tienda<small>Podés probar de nuevo cuando quieras. Si te trabás, tocá Ayuda.</small></div><div class="sp"></div>${btn('Probar de nuevo', 'shareRetry', { tone: 'tienda' })}${btn('Volver a mi tienda', 'toDash', { sec: true })}`, transient: true });
+R.shareOk = () => ({ html: `<div class="sp"></div><div class="card t-exito" style="pointer-events:none;min-height:260px">${ic('check')}¡Buenísimo, ${OWNER}!<small>${isProd() ? `Si alguien te pide ${shName()}, te aviso por acá.` : 'Cuando alguien te pida algo, te aviso por acá.'}</small></div><div class="sp"></div>${btn('Volver a mi tienda', 'toDash', { tone: 'tienda' })}${isProd() ? btn('Compartir otro producto', 'shareProdStart', { sec: true }) : ''}`, transient: true });
+
+/* productos */
+R.prods = () => {
+  const nt = S.notice; S.notice = '';
+  const l = S.prods.filter(p => S.pf === 'todos' || (S.pf === 'visibles' ? !p.hidden : p.hidden));
+  return { html: `${bar()}${nt ? `<div class="hint" role="note">${ic('info')}<span>${nt}</span></div>` : ''}${hero('Mis productos')}<div class="pills t-prodt" role="group" aria-label="Filtrar">${['todos', 'visibles', 'ocultos'].map(f => `<button type="button" class="pill" data-act="pf" data-arg="${f}" aria-pressed="${S.pf === f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}</div>
+  <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">${l.map(p => `<li><button type="button" class="row t-prodt" data-act="prod" data-arg="${p.id}"><span class="iconbox">${S.prods.indexOf(p) + 1}</span><span class="grow"><span class="ttl">${esc(p.name)}</span><span class="sub">${fmt(p.price)}</span><span class="tag ${p.hidden ? 'gray' : 'ok'}">${p.hidden ? 'Oculto' : 'Visible'}</span></span></button></li>`).join('') || '<li><p class="lead">No hay productos en esta lista.</p></li>'}</ul><div class="sp"></div>${btn('Agregar producto nuevo', 'newProd', { tone: 'prodt', icon: 'box' })}`, kind: 'prods' };
+};
+R.prodDetail = () => { const p = prod(S.prod); return { html: `${bar()}<div class="photobox has t-prodt" style="pointer-events:none;min-height:150px">${ic('img')}</div><div><span class="tag ${p.hidden ? 'gray' : 'ok'}">${p.hidden ? 'Oculto' : 'Visible'}</span><h1 tabindex="-1" style="margin-top:8px">${esc(p.name)}</h1><p class="lead" style="margin-top:6px"><b>${fmt(p.price)}</b></p><p class="body muted" style="margin-top:6px">${esc(p.desc || 'Sin descripción.')}</p></div><div class="sp"></div>${btn('Editar producto', 'editProd', { tone: 'prodt', icon: 'pen', arg: p.id })}${btn(p.hidden ? 'Mostrar en la tienda' : 'Ocultar de la tienda', 'toggleProd', { sec: true, icon: p.hidden ? 'eye' : 'eyeoff', arg: p.id })}${btn('Eliminar producto', 'askDel', { tone: 'peligro', cls: 'mini', icon: 'trash' })}` }; };
+R.pdel = () => { const p = prod(S.prod); return { html: `${bar()}${hero('¿Eliminar este producto?', `«${esc(p.name)}» se va a borrar de tu tienda.`)}<div class="sp"></div>${btn('Sí, eliminar', 'doDel', { tone: 'peligro', arg: p.id })}${btn('No, dejarlo', 'back', { sec: true })}` }; };
+R.pnew = () => ({ html: `${bar()}${hero('Paso 1: Cargá tu producto')}<button type="button" class="photobox t-prodt ${S.pcPhoto ? 'has' : ''}" data-act="pickPhoto" data-arg="pnew">${S.pcPhoto ? ic('check') + 'Foto lista. Tocá para cambiarla' : ic('cam') + 'Tocar para sacar o subir una foto'}</button><div><p class="label">Podés contar:</p><ul class="bul"><li>• Nombre del producto</li><li>• Precio en pesos</li><li>• Descripción: qué es y para qué sirve</li></ul></div>${field('ptext', '<span class="sr">Contanos sobre tu producto</span>', { area: true, ph: 'Contanos sobre tu producto', v: S.pcText, err: 'Contanos algo de tu producto: el nombre y el precio, por ejemplo.' })}<div class="sp"></div>${btn('Guardar y seguir', 'pcSave', { tone: 'prodt' })}` });
+R.pedit = () => { const d = S.pdraft; return { html: `${bar()}${hero(S.editing === 'new' ? 'Producto nuevo' : 'Cambiar datos')}<button type="button" class="photobox t-prodt ${d.photo ? 'has' : ''}" data-act="pickPhoto" data-arg="pedit" style="min-height:120px">${d.photo ? ic('check') + 'Foto lista' : ic('cam') + 'Sumar una foto'}</button>${field('pname', 'Nombre', { v: d.name, ph: 'Ej: Mermelada de naranja' })}${field('pprice', 'Precio', { num: true, pre: true, v: d.price, ph: 'Ej: 4500', voice: false, err: 'Escribí el precio con números.' })}${field('pdesc', 'Descripción (opcional)', { area: true, v: d.desc, ph: 'Ej: Hecha a mano.', err: '' })}<div class="sp"></div>${btn('Guardar', 'pSave', { tone: 'exito' })}` }; };
+
+/* pedidos */
+R.orders = () => {
+  const l = S.orders.filter(o => S.of === 'todos' || (S.of === 'nuevos' ? o.st === 'Nuevo' : o.st === 'Entregado'));
+  return { html: `${bar()}${hero('Mis pedidos')}<div class="pills t-pedt" role="group" aria-label="Filtrar">${['todos', 'nuevos', 'entregados'].map(f => `<button type="button" class="pill" data-act="of" data-arg="${f}" aria-pressed="${S.of === f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}</div>
+  <ul style="list-style:none;display:flex;flex-direction:column;gap:14px">${l.map(o => `<li><button type="button" class="row t-pedt" data-act="order" data-arg="${o.id}"><span class="iconbox">${S.orders.indexOf(o) + 1}</span><span class="grow"><span class="ttl">${o.who}</span><span class="sub">${o.what}</span><span class="tag ${tagFor(o.st)}">${o.st}</span></span></button></li>`).join('') || '<li><p class="lead">No hay pedidos en esta lista.</p></li>'}</ul>`, kind: 'orders' };
+};
+R.order = () => { const o = S.orders.find(x => x.id === S.order); return { html: `${bar()}<div><span class="tag ${tagFor(o.st)}">${o.st}</span><h1 tabindex="-1" style="margin-top:8px">${o.who}</h1></div><div class="row t-pedt" style="pointer-events:none"><span class="grow"><span class="sub">Pidió</span><span class="ttl">${o.what}</span><span class="sub">Total ${fmt(o.total)}</span></span></div><div class="sp"></div>${btn('Avisarle por WhatsApp', 'notify', { tone: 'exito', icon: 'chat', arg: o.id })}${btn('Llamar', 'call', { sec: true, icon: 'phone' })}${o.st !== 'Entregado' ? btn('Marcar como entregado', 'delivered', { sec: true, cls: 'mini', arg: o.id }) : ''}` }; };
+
+/* ferias y carpeta */
+const FAIRS = [
+  { id: 1, name: 'Feria de la Costanera', date: 'Sáb 7 de diciembre · 10 a 18 h', where: 'Costanera Este', st: 'Abierta la inscripción' },
+  { id: 2, name: 'Mercado de Navidad', date: 'Dom 15 de diciembre · 11 a 20 h', where: 'Plaza Central', st: 'Abierta la inscripción' },
+  { id: 3, name: 'Feria de Verano', date: 'Sáb 18 de enero · 17 a 23 h', where: 'Paseo del Puerto', st: 'Pronto' },
+];
+R.ferias = () => ({ html: `${bar()}${hero('Ferias', 'Primero armá tu carpeta. Después te inscribís.')}<button type="button" class="card t-feria" data-act="toCarpeta" style="min-height:170px">${ic('shopf')}${S.cDone.size >= 7 ? 'Mi carpeta' : 'Armar mi carpeta'}<small>${S.cDone.size} de 8 etapas listas</small></button><h2>Próximas ferias</h2><ul style="list-style:none;display:flex;flex-direction:column;gap:14px">${FAIRS.map(f => `<li><button type="button" class="row t-feria" data-act="fair" data-arg="${f.id}"><span class="iconbox soft">${ic('cal')}</span><span class="grow"><span class="ttl">${f.name}</span><span class="sub">${f.date}</span><span class="tag ${f.st === 'Pronto' ? 'gray' : 'ok'}">${f.st}</span></span></button></li>`).join('')}</ul>` });
+R.fair = () => { const f = FAIRS.find(x => x.id === S.fair), ready = S.cDone.size >= 7; return { html: `${bar()}${hero(f.name, f.date)}<div class="row t-feria" style="pointer-events:none"><span class="iconbox soft">${ic('pin')}</span><span class="grow"><span class="ttl">${f.where}</span><span class="sub">${f.st}</span></span></div><div class="sp"></div>${S.enrolled ? `<div class="hint t-exito">${ic('check')}<span>Ya estás inscripta/o en una feria.</span></div>` : ''}${f.st === 'Pronto' ? btn('Avisarme cuando abra', 'remind', { tone: 'feria', icon: 'cal' }) : ready ? btn('Inscribirme', 'enrollGo', { tone: 'exito', arg: f.id }) : btn('Primero armá tu carpeta', 'toCarpeta', { tone: 'feria', icon: 'folder' })}${btn('Ver en el mapa', 'map', { sec: true, icon: 'pin', cls: 'mini' })}` }; };
+R.cIntro = () => ({ html: `${bar()}<div class="sp"></div><div><h1 tabindex="-1">¡Armemos tu carpeta de presentación!</h1><p class="lead muted" style="margin-top:12px">Es un documento digital para presentar tu emprendimiento y postularte a las ferias de la ciudad.</p></div><div class="sp"></div>${btn('Dale', 'introGo', { tone: 'feria' })}`, bg: '#e9c0c6' });
+const CST = [
+  { t: 'Mi tapa', s: 'Logo y frase' }, { t: 'Fotos para mi carpeta', s: '7 fotos de tu trabajo' },
+  { t: 'Cómo lo hago', s: 'Cómo trabajás' }, { t: 'Mi historia', s: 'Tu historia' },
+  { t: 'Quién soy', s: 'Presentate' }, { t: 'Qué me diferencia', s: 'Lo que te hace única/o' },
+  { t: 'Mi motivo', s: 'Por qué lo hacés' }, { t: 'Mi carpeta lista', s: 'Descargá tu carpeta' },
+];
+const CH = ['En tu guía: pág. 5', 'En tu guía: págs. 6 a 9', 'Revisá tu guía', 'En tu guía: pág. 9', 'Revisá tu guía', 'Revisá tu guía', 'Revisá tu guía', 'Mirá cómo quedó tu carpeta.'];
+R.cRoute = () => { const n = S.cDone.size; return { html: `${bar()}${hero('Tu carpeta', `${n} de 8 etapas listas`)}${prog(Math.min(n + 1, 9), 8, 'feria', true)}<div class="hint" role="note">${ic('info')}<span>Cada etapa te dice qué páginas de tu guía mirar.</span></div><div class="t-feria" style="display:flex;flex-direction:column;gap:14px">${CST.map((c, i) => { const k = i + 1, done = k < 8 ? S.cDone.has(k) : S.cDone.has(8), open = k === 1 || (k < 8 ? S.cDone.has(k - 1) || S.cDone.has(k) : S.cDone.size >= 7); return etapaCard(k, c.t, done ? 'hecho' : open ? 'ahora' : 'cerrada', open ? CH[i] : CLOSED, 'cStage', k); }).join('')}</div>${btn('Ver la carpeta', 'cStage', { tone: 'feria', arg: 8, dis: S.cDone.size < 7 })}`, kind: 'cRoute' }; };
+const TF = 'feria';
+R.c1 = () => ({ html: `${bar()}${prog(1, 8, TF)}<div class="hint" role="note">${ic('info')}<span>Revisá la página 5 de la guía</span></div>${hero('¿Cómo se llama tu marca?')}${field('brand', 'Nombre de tu marca', { ph: 'Escribilo acá', v: S.brand })}<button type="button" class="photobox t-${TF} ${S.logo ? 'has' : ''}" data-act="pickPhoto" data-arg="logo" style="min-height:140px">${S.logo ? ic('check') + 'Logo listo · tocá para cambiar' : ic('cam') + 'Subir mi logo'}</button><button type="button" class="btn sm sec" style="align-self:flex-start" data-act="noLogo">No tengo logo</button>${field('line', 'Tu frase (opcional)', { ph: 'Ej: Dulces de mi quinta a tu mesa', v: S.brandLine, err: '' })}<div class="sp"></div>${btn('Seguir', 'cSave', { tone: TF, arg: 1 })}` });
+R.c2tips = () => ({ html: `${bar()}<div class="hint" role="note">${ic('info')}<span>Revisá las páginas 6 a 9 de tu guía</span></div><div>${eyebrow('Antes de empezar')}<h1 tabindex="-1" style="margin-top:6px">Consejos para tus fotos</h1></div><div class="carr t-feria">${['Limpiá la lente del celular con un trapito suave.', 'Buscá luz natural: cerca de una ventana, de día. Sin flash.', 'Usá un fondo liso: una pared, una tela o una cartulina de un solo color.', 'Sostené el celular firme, con las dos manos.', 'Sacá varias fotos y elegí la que mejor luzca tu producto.'].map((t, i) => `<div class="tipc"><b>${i + 1}</b>${t}</div>`).join('')}</div><p class="body muted">Deslizá para conocer más →</p><div class="sp"></div>${btn('Empecemos', 'tipsGo', { tone: TF })}` });
+const PH = [['estrella', 'Tu producto estrella', '1 foto · página 7 de tu guía'], ['feria', 'Productos para la feria', '4 fotos · página 7 de tu guía'], ['manos', 'Tus manos trabajando', '1 foto · página 8 de tu guía'], ['materiales', 'Tus materiales', '1 foto · página 8 de tu guía'], ['espacio', 'Tu espacio', '1 foto · página 9 de tu guía'], ['detalle', 'Un detalle de cerca', '1 foto · página 9 de tu guía'], ['uso', 'Tu producto en uso', '1 foto · página 9 de tu guía']];
+R.c2 = () => { const n = S.photos.size; return { html: `${bar()}<div>${eyebrow(`${n} de 7 listas`)}${prog(Math.min(n + 1, 8), 7, TF, true)}</div>${hero('Subí las fotos que sacaste')}<div class="t-${TF}">${PH.map(([k, t, sb]) => `<button type="button" class="frow" data-act="pickPhoto" data-arg="${k}"><span class="pl">${S.photos.has(k) ? ic('check') : '+'}</span><span><span class="ft">${t}</span><span class="fs">${sb}</span></span></button>`).join('')}</div><div class="sp"></div>${btn(n === 7 ? 'Guardar etapa' : `Faltan ${7 - n} fotos`, 'cSave', { tone: TF, arg: 2, dis: n < 7 })}` }; };
+R.c3 = () => ({ html: `${bar()}${prog(3, 8, TF)}${hero('Cómo lo hago', 'Contá cómo trabajás.')}${field('how', 'Cómo lo hago', { area: true, ph: 'Ej: Cocino en pequeñas tandas, con frutas frescas.', v: S.how })}<div class="sp"></div>${btn('Guardar etapa', 'cSave', { tone: TF, arg: 3 })}` });
+R.c4 = () => ({ html: `${bar()}${prog(4, 8, TF)}${hero('Mi historia', 'Cómo empezó todo.')}${field('story', 'Mi historia', { area: true, ph: 'Ej: Empecé a cocinar con mi abuela…', v: S.story })}<div class="sp"></div>${btn('Guardar etapa', 'cSave', { tone: TF, arg: 4 })}` });
+R.c5 = () => ({ html: `${bar()}${prog(5, 8, TF)}${hero('Quién soy', 'Presentate con tus palabras.')}${field('who', 'Quién soy', { area: true, ph: 'Ej: Soy Elsa y cocino desde chica.', v: S.who })}<div class="sp"></div>${btn('Guardar etapa', 'cSave', { tone: TF, arg: 5 })}` });
+R.c6 = () => { const D = ['Uso ingredientes de la zona', 'Todo es hecho a mano', 'Hago piezas únicas', 'Atiendo pedidos a medida', 'Cuido el medio ambiente']; return { html: `${bar()}${prog(6, 8, TF)}${hero('Qué me diferencia', 'Elegí hasta 3 opciones.')}<div class="fld"><div class="t-${TF}">${D.map(d => opt(d, S.dif.has(d), 'dif:' + d)).join('')}</div><div class="hint warn hidden" data-hint="dif">${ic('info')}<span>Elegí al menos una.</span></div></div><div class="sp"></div>${btn('Guardar etapa', 'cSave', { tone: TF, arg: 6 })}` }; };
+R.c7 = () => ({ html: `${bar()}${prog(7, 8, TF)}${hero('Mi motivo', 'Por qué hacés lo que hacés.')}${field('why', 'Mi motivo', { area: true, ph: 'Ej: Me gusta que la gente pruebe lo casero.', v: S.why, err: 'Podés dejarlo vacío.' })}<div class="sp"></div>${btn('Guardar etapa', 'cSave', { tone: TF, arg: 7 })}` });
+R.c8 = () => { S.cDone.add(8); return { html: `${bar()}${prog(8, 8, TF)}<div class="card t-exito" style="pointer-events:none;min-height:170px">${ic('check')}¡Tu carpeta está lista!<small>La ven los organizadores al inscribirte.</small></div><div class="sp"></div>${btn('Descargar mi carpeta', 'download', { tone: TF, icon: 'dl' })}${btn('Inscribirme a una feria', 'toFerias', { tone: 'exito' })}${btn('Cambiar algo', 'toCarpeta', { sec: true, cls: 'mini' })}` }; };
+R.enroll = () => { const f = FAIRS.find(x => x.id === S.fair); return { html: `${bar()}${hero('Confirmá tu inscripción', f.name)}<div class="row t-feria" style="pointer-events:none"><span class="grow"><span class="ttl">${esc(S.shop || 'Tu emprendimiento')}</span><span class="sub">Carpeta con 7 fotos</span><span class="tag solid">Lista</span></span></div><div class="sp"></div>${btn('Enviar inscripción', 'sendEnroll', { tone: 'exito' })}${btn('Todavía no', 'back', { sec: true, cls: 'mini' })}` }; };
+R.enrolled = () => ({ html: `<div class="sp"></div><div class="card t-exito" style="pointer-events:none;min-height:200px">${ic('check')}¡Inscripción enviada!<small>Te avisamos por WhatsApp cuando confirmen tu lugar.</small></div><div class="sp"></div>${btn('Agregar a mi calendario', 'calendar', { sec: true, icon: 'cal' })}${btn('Volver al inicio', 'toMenu', { tone: 'tienda' })}`, transient: true });
+
+/* selector de foto (compartido) */
+const SW = ['#fde68a', '#bbf7d0', '#bae6fd', '#fbcfe8', '#ddd6fe', '#fed7aa'];
+R.pick = () => ({ html: `${bar()}${['pedit', 'prod', 'pnew'].includes(S.pickFor) ? hero('Elegí la foto de tu producto', 'Tocá la foto que querés usar.') : hero('Elegí una foto', 'Tocá la que quieras.')}<div class="gal">${SW.slice(0, 4).map((c, i) => `<button type="button" class="tile" style="padding:0;border:0;background:none;min-height:0" data-pick="${i}" aria-pressed="${S.picked === i}" aria-label="Foto ${i + 1}"><span class="sw" style="background:${S.picked === i ? c : '#e5e5e3'};width:100%">${ic('img')}</span></button>`).join('')}</div><div class="sp"></div>${btn(['pedit', 'prod', 'pnew'].includes(S.pickFor) ? 'Elegir esta foto' : 'Usar esta foto', 'pickUse', { tone: ['pnew', 'pedit'].includes(S.pickFor) ? 'prodt' : 'tienda', dis: S.picked === null })}` });
+
+/* enlaces de la guía física */
+R.links = () => ({ html: `${bar({ noBack: true })}${hero('Links de la guía física', 'Cada QR de la guía abre un paso.')}<div class="qr"><p class="label">Tienda</p>${[1, 2, 3, 4, 5, 6].map(n => `<code>?paso=tienda-${n}</code>`).join('')}<p class="label" style="margin-top:6px">Carpeta</p>${[1, 2, 3, 4, 5, 6, 7, 8].map(n => `<code>?paso=carpeta-${n}</code>`).join('')}</div>${btn('Ir al inicio', 'toMenu', { tone: 'tienda' })}` });
+
+/* ---------- router ---------- */
+const NAMES = { splash: 'Inicio (logo)', wel: 'Bienvenida', login: 'Inicio de sesión', onb: 'Onboarding · tu emprendimiento', menu: 'Menú principal', clientes: 'Contactar cliente', cliente: 'Cliente', t1: 'Tienda 1 · Mis productos', t2: 'Tienda 2 · Mis fotos', t3: 'Tienda 3 · Mis precios', t4: 'Tienda 4 · Mis descripciones', t5: 'Tienda 5 · Mis pedidos', t6: 'Tienda 6 · Mis datos de contacto', t7: 'Tienda · ¡Abierta!', dash: 'Mi tienda · panel', shop: 'Ver mi tienda', share: 'Compartir', shareWa: 'Compartir por WhatsApp', shareIg: 'Compartir por Instagram', shareOk: 'Compartido', shareHome: 'Así ven tu tienda', pickProd: 'Compartir producto · elegir', shareWhere: 'Compartir · dónde mostrar', shareView: 'Compartir · vista previa', waPick: 'WhatsApp simulado', waStatus: 'WhatsApp · Estado', shareAsk: '¿Pudiste compartir?', shareFail: 'No se pudo compartir', pnew: 'Cargar producto', tRoute: 'Armá tu tienda · pasos', prods: 'Productos', prodDetail: 'Producto', pdel: 'Eliminar producto', pedit: 'Producto (editar/nuevo)', orders: 'Pedidos', order: 'Pedido', ferias: 'Ferias', fair: 'Feria', cIntro: 'Carpeta · intro', cRoute: 'Carpeta · etapas', c1: 'Carpeta 1 · Mi tapa', c2tips: 'Carpeta 2 · Consejos de fotos', c2: 'Carpeta 2 · Fotos', c3: 'Carpeta 3 · Cómo lo hago', c4: 'Carpeta 4 · Mi historia', c5: 'Carpeta 5 · Quién soy', c6: 'Carpeta 6 · Qué me diferencia', c7: 'Carpeta 7 · Mi motivo', c8: 'Carpeta 8 · Lista', enroll: 'Inscripción', enrolled: 'Inscripción enviada', pick: 'Elegir foto', links: 'Links de la guía' };
+function go(name, arg, o = {}) { if (cur && !o.replace && !(R[cur]().transient)) H.push([cur, curArg]); render(name, arg); }
+function back() { const p = H.pop(); if (p) render(p[0], p[1]); else render('menu'); }
+function home(name, arg) { H = []; if (name !== 'menu') H.push(['menu', null]); render(name, arg); }
+function render(name, arg) {
+  clearTimeout(TM); clearTimeout(BT); closeHelp();
+  cur = name; curArg = arg;
+  const r = R[name](arg);
+  screen.innerHTML = withBanner(name, r.html); screen.style.background = r.bg || ''; screen.style.color = r.fg || '';
+  { const nw = screen.dataset.k !== name && name !== 'splash' && name !== 'wel'; screen.classList.remove('enter'); if (nw) { void screen.offsetWidth; screen.classList.add('enter'); clearTimeout(screen._en); screen._en = setTimeout(() => screen.classList.remove('enter'), 900); } } screen.dataset.k = name; if (name === 'wel') $$('.up,.sub30', screen).forEach(el => { let i = 0; el.innerHTML = el.textContent.split(' ').map(w => `<span class="aw" style="--i:${i++}">${w}</span>`).join(' '); }); screen.scrollTop = 0; $('#jump').value = name;
+  const h = $('h1[tabindex="-1"]', screen); if (h) h.focus({ preventScroll: true });
+  if (BAN[name]) BT = setTimeout(() => { if (cur === name) showTip(BAN[name]); }, name === 'menu' ? 900 : 650);
+  if (SPOT[name] && !SEEN.has(name)) { SEEN.add(name); setTimeout(() => { if (cur === name) help(); }, 600); }
+  if (r.auto) TM = setTimeout(() => go(r.auto[0], r.auto[2], { replace: true }), r.auto[1]);
+}
+const val = id => { const f = $('#' + id, screen); return f ? f.value.trim() : ''; };
+function need(id, min) {
+  const v = val(id), ok = min ? digits(v).length >= min : v.length > 0;
+  if (!ok) { const h = $(`[data-hint="${id}"]`, screen); if (h) h.classList.remove('hidden'); const f = $('#' + id, screen); if (f) f.focus(); }
+  return ok;
+}
+let TT2;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(TT2); TT2 = setTimeout(() => t.classList.remove('show'), 2400); }
+const BAN = {
+  menu: 'Empezá por Mi Tienda Digital. Después podés postularte a una feria.',
+  t1: 'Poné el nombre como lo conocen tus clientes. Lo podés cambiar cuando quieras.',
+  t3: 'Después lo podés ajustar cuando quieras.',
+  pedit: 'Si te cuesta escribir, tocá «Hablar» y decilo con tu voz.',
+  fair: 'Podés mirar los requisitos antes de postularte. No te compromete a nada.',
+};
+const SPOT = {
+  orders: () => ({ sel: '.row', text: 'Tocá un pedido para ver qué te pidieron.' }),
+  clientes: () => ({ sel: '.row', text: 'Tocá un cliente para escribirle.' }),
+  share: () => ({ sel: '.btn.t-exito', text: 'Tocá acá para compartir tu tienda.' }),
+  shareWa: () => ({ sel: '.opt', text: 'Elegí a quién se lo mandás y tocá «Abrir WhatsApp».' }),
+  dash: () => S.open ? { sel: '.card.half:not([aria-disabled])', text: 'Desde acá manejás todo. Empezá por Ver tienda.' } : { sel: '.btn.t-tienda', text: 'Tocá acá para armar tu tienda en 6 pasos.' },
+};
+const SEEN = new Set();
+const withBanner = (name, html) => {
+  return html;   // los avisos ya no ocupan lugar en la pantalla: bajan desde arriba como ayuda (ver render)
+  if (!BAN[name]) return html;
+  const b = `<div class="hint" role="note">${ic('help')}<span>${BAN[name]}</span></div>`;
+  const i = html.indexOf('</h1>'); if (i < 0) return html;
+  const rest = html.slice(i + 5);
+  if (rest.startsWith('</div>')) return html.slice(0, i + 11) + b + html.slice(i + 11);
+  if (rest.startsWith('<p')) { const j = html.indexOf('</p></div>', i); if (j > 0) return html.slice(0, j + 10) + b + html.slice(j + 10); }
+  return html.slice(0, i + 5) + b + html.slice(i + 5);
+};
+let HT = 0, HOUT = 0, BT = 0;
+function hideTip() {
+  clearTimeout(HT); clearTimeout(HOUT);
+  const b = $('.spotb', phone), d = $('.spotl', phone);
+  if (b) b.classList.remove('in'); if (d) d.classList.remove('in');
+  HOUT = setTimeout(() => $$('.spotb, .spotl', phone).forEach(x => x.remove()), 520);
+}
+function showTip(text, cfg, o) {
+  closeHelp();
+  const t = cfg && $(cfg.sel, screen);
+  if (t) {
+    t.scrollIntoView({ block: 'center' });
+    const pr = phone.getBoundingClientRect(), tr = t.getBoundingClientRect(), W = pr.width, H = pr.height;
+    const x1 = Math.max(0, tr.left - pr.left - 14), y1 = Math.max(0, tr.top - pr.top - 8), x2 = Math.min(W, tr.right - pr.left + 6), y2 = Math.min(H, tr.bottom - pr.top + 14);
+    const d = document.createElement('div'); d.className = 'spotl'; d.setAttribute('aria-hidden', 'true');
+    d.style.clipPath = `polygon(evenodd, 0 0, ${W}px 0, ${W}px ${H}px, 0 ${H}px, 0 0, ${x1}px ${y1}px, ${x1}px ${y2}px, ${x2}px ${y2}px, ${x2}px ${y1}px, ${x1}px ${y1}px)`;
+    phone.appendChild(d); requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('in')));
+  }
+  const b = document.createElement('div'); b.className = 'spotb' + (o && o.err ? ' err' : ''); b.setAttribute('role', o && o.err ? 'alert' : 'status'); b.setAttribute('aria-live', o && o.err ? 'assertive' : 'polite');
+  b.innerHTML = `${ic('help')}<span>${text}</span><button type="button" aria-label="Cerrar ayuda" data-act="closeHelp">${ic('x')}</button>`;
+  phone.appendChild(b); requestAnimationFrame(() => requestAnimationFrame(() => b.classList.add('in')));
+  const dur = 7000 + String(text).replace(/<[^>]*>/g, '').length * 90;   // tiempo para leer sin apuro
+  const arm = ms => { clearTimeout(HT); HT = setTimeout(hideTip, ms); };
+  arm(dur);
+  b.addEventListener('pointerenter', () => clearTimeout(HT)); b.addEventListener('pointerleave', () => arm(4000));
+  b.addEventListener('focusin', () => clearTimeout(HT)); b.addEventListener('focusout', () => arm(4000));
+}
+function closeHelp() { clearTimeout(HT); clearTimeout(HOUT); $$('.tips, .spotl, .spotb', phone).forEach(x => x.remove()); }
+function help() {
+  if ($('.spotb.in', phone)) { hideTip(); return; }
+  const cfg = SPOT[cur] && SPOT[cur]();
+  const text = cfg ? cfg.text : (TIPS[cur] || (FIELD_SCREENS.includes(cur) ? TIPS._field : TIPS._def));
+  showTip(text, cfg);
+}
+function voice(btn) {
+  const lab = $('[data-vl]', btn), old = lab.textContent, f = $('#' + btn.dataset.voice, screen); lab.textContent = 'Escuchando…';
+  setTimeout(() => { if (f) { const ej = (f.placeholder || '').replace(/^Ej:\s*/, ''); f.value = f.inputMode === 'numeric' ? '4500' : ej || 'Sabores de Casa'; } lab.textContent = old; toast('Voz simulada: es un prototipo.'); }, 1100);
+}
+const saveDraftFromScreen = () => {
+  const m = { shop: 'shop', wa: 'wa', pname: 'name', pprice: 'price', pdesc: 'desc' };
+  Object.entries(m).forEach(([id, k]) => { const f = $('#' + id, screen); if (f && S.pdraft === null) S.draft[k] = f.value.trim(); });
+};
+
+/* ---------- acciones ---------- */
+const ACT = {
+  back, help, closeHelp: hideTip,
+  welNext(a) { go('login'); },
+  login() { if (!need('tel', 8)) return; S.phone = val('tel'); go('onb'); },
+  onbSave() { if (!need('shop')) return; S.shop = val('shop'); S.desc = val('desc'); home('menu'); },
+  toMenu() { home('menu'); },
+  toTienda() { go('dash'); },
+  toSteps() { go('tRoute'); },
+  tStage(a) { a = +a; const open = a === 1 || S.tDone.has(a - 1) || S.tDone.has(a); if (!open) { toast('Se abre después de completar el paso ' + (a - 1) + '.'); return; } go('t' + a); },
+  locked() { toast('Primero armá tu tienda: te faltan ' + (6 - S.tDone.size) + ' pasos.'); },
+  toClientes() { go('clientes'); },
+  cliente(a) { S.order = +a; go('cliente'); },
+  toDash() { home('dash'); },
+  toShop() { go('shop'); },
+  tNext(a) {
+    a = +a;
+    if (a === 1) { if (!need('pname')) return; S.draft.name = val('pname'); }
+    if (a === 2) { if (!S.draft.photo) { toast('Sumá una foto del producto.'); return; } }
+    if (a === 3) { if (!need('pprice', 1)) return; S.draft.price = +digits(val('pprice')); }
+    if (a === 4) { S.draft.desc = val('pdesc'); }
+    if (a === 5) { if (!S.draft.ped.size) { toast('Elegí al menos una opción.'); return; } }
+    if (a === 6) { if (!need('wa', 8)) return; S.draft.wa = val('wa'); S.draft.shop = S.shop; S.prods.unshift({ id: S.nextId++, name: S.draft.name, price: S.draft.price, desc: S.draft.desc, hidden: false }); S.open = true; }
+    S.tDone.add(a); H = [['menu', null], ['dash', null]]; if (a === 6) render('t7'); else { render('tRoute'); toast(`Paso ${a} listo.`); }
+  },
+  pickPhoto(a) { S.pickFor = a; S.picked = null; if (cur === 't2') S.draft.name = val('pname') || S.draft.name; if (cur === 'pnew') S.pcText = val('ptext'); if (cur === 'pedit') { S.pdraft.name = val('pname'); S.pdraft.price = val('pprice'); S.pdraft.desc = val('pdesc'); } if (cur === 'c1') { S.brandLine = val('line'); S.brand = val('brand'); } go('pick'); },
+  pickUse() {
+    const a = S.pickFor; if (S.picked === null) return;
+    if (a === 'prod') S.draft.photo = true; else if (a === 'pedit') S.pdraft.photo = true; else if (a === 'pnew') S.pcPhoto = true; else if (a === 'logo') S.logo = true; else S.photos.add(a);
+    back();
+  },
+  noLogo() { S.brandLine = val('line'); S.brand = val('brand'); S.logo = false; toast('Sin problema, seguimos sin logo.'); },
+  /* compartir */
+  toShare() { go('shareHome'); },
+  shareStart() { S.shareKind = 'tienda'; S.where = 'persona'; go('shareWhere'); },
+  shareProdStart() { S.shareKind = 'prod'; S.where = 'persona'; go('pickProd'); },
+  pickProdGo(a) { S.shareProd = +a; go('shareWhere'); },
+  shareNext() { go('shareView'); },
+  waGo() { S.contact = null; go(S.where === 'estado' ? 'waStatus' : 'waPick'); },
+  waSend() { toast('Se abre WhatsApp con el mensaje listo.'); setTimeout(() => go('shareAsk', null, { replace: true }), 700); },
+  shareYes() { go('shareOk', null, { replace: true }); },
+  shareNo() { go('shareFail', null, { replace: true }); },
+  shareRetry() { go('shareView', null, { replace: true }); },
+  shareVia(a) { go(a === 'wa' ? 'shareWa' : 'shareIg'); },
+  shareSend() { toast('Se abre WhatsApp con el mensaje listo.'); setTimeout(() => go('shareOk', null, { replace: true }), 900); },
+  shareSent() { go('shareOk'); },
+  copy() { try { navigator.clipboard.writeText('yoemprendo.app/' + slug()).catch(() => { }); } catch (e) { } toast('Listo, copiamos el link.'); },
+  /* productos */
+  toProds() { S.pf = 'todos'; go('prods'); },
+  pf(a) { S.pf = a; render('prods'); },
+  prod(a) { S.prod = +a; go('prodDetail'); },
+  toggleProd(a) { const p = prod(a); p.hidden = !p.hidden; render('prodDetail'); toast(p.hidden ? 'Ahora no se ve en tu tienda.' : 'Ahora se ve en tu tienda.'); },
+  askDel() { go('pdel'); },
+  doDel(a) { S.prods = S.prods.filter(p => p.id !== +a); H = [['menu', null], ['dash', null]]; render('prods'); toast('Eliminamos el producto.'); },
+  newProd() { S.pcText = ''; S.pcPhoto = false; go('pnew'); },
+  pcSave() { const t = val('ptext'); if (!/\d/.test(t)) { $('[data-hint=ptext]', screen).classList.remove('hidden'); $('#ptext', screen).focus(); return; } if (!S.pcPhoto) { S.pcText = t; showTip('No pudimos guardar tu foto. Revisá que se vea bien y probá de nuevo.', null, { err: true }); return; } const m = t.match(/\$?\s*(\d[\d.]*)/), price = +digits(m[1]), name = t.split(/[,.$]/)[0].trim().slice(0, 40) || 'Producto nuevo'; S.prods.unshift({ id: S.nextId++, name, price, desc: t, hidden: false }); S.pf = 'todos'; H = [['menu', null], ['dash', null]]; S.notice = 'Listo. Guardamos los cambios.'; render('prods'); },
+  editProd(a) { const p = prod(a); S.editing = p.id; S.pdraft = { name: p.name, price: p.price, desc: p.desc, photo: true }; go('pedit'); },
+  pSave() {
+    if (!need('pname') || !need('pprice', 1)) return;
+    const d = { name: val('pname'), price: +digits(val('pprice')), desc: val('pdesc') };
+    if (S.editing === 'new') S.prods.unshift({ id: S.nextId++, ...d, hidden: false }); else Object.assign(prod(S.editing), d);
+    S.pdraft = null; S.pf = 'todos'; H = [['menu', null], ['dash', null]]; S.notice = 'Listo. Guardamos los cambios.'; render('prods');
+  },
+  /* pedidos */
+  toOrders() { S.of = 'todos'; go('orders'); },
+  of(a) { S.of = a; render('orders'); },
+  order(a) { S.order = +a; go('order'); },
+  notify(a) { const o = S.orders.find(x => x.id === +a); S.of = 'todos'; H = [['menu', null], ['dash', null]]; render('orders'); toast(`Le avisamos a ${o.first} por WhatsApp.`); },
+  call() { toast('Llamando… (prototipo)'); },
+  delivered(a) { S.orders.find(x => x.id === +a).st = 'Entregado'; S.of = 'todos'; H = [['menu', null], ['dash', null]]; render('orders'); toast('Marcamos el pedido como entregado.'); },
+  /* ferias / carpeta */
+  toFerias() { go('ferias'); },
+  fair(a) { S.fair = +a; go('fair'); },
+  toCarpeta() { S.intro ? go('cRoute') : go('cIntro'); },
+  introGo() { S.intro = true; go('cRoute', null, { replace: true }); },
+  cStage(a) {
+    a = +a; if (a === 2 && !S.tipsSeen && (S.cDone.has(1) || S.cDone.has(2))) { go('c2tips'); return; } const open = a === 1 || (a < 8 ? S.cDone.has(a - 1) || S.cDone.has(a) : S.cDone.size >= 7);
+    if (!open) { toast(a === 8 ? 'Primero terminá las 7 etapas.' : `Se abre después de la etapa ${a - 1}`); return; }
+    go('c' + a);
+  },
+  cSave(a) {
+    a = +a;
+    if (a === 1) { S.brandLine = val('line'); S.brand = val('brand'); if (!need('brand')) return; }
+    if (a === 3) { S.how = val('how'); if (!need('how')) return; }
+    if (a === 4) { S.story = val('story'); if (!need('story')) return; }
+    if (a === 5) { S.who = val('who'); if (!need('who')) return; }
+    if (a === 6) { if (!S.dif.size) { $('[data-hint=dif]', screen).classList.remove('hidden'); return; } }
+    if (a === 7) { S.why = val('why'); }
+    S.cDone.add(a); H = [['menu', null], ['ferias', null], ['cRoute', null]];
+    if (S.cDone.size >= 7) { render('c8'); toast('¡Terminaste las 7 etapas!'); } else { render('cRoute'); toast(`Etapa ${a} lista.`); }
+  },
+  tipsGo() { S.tipsSeen = true; go('c2', null, { replace: true }); },
+  download() { toast('Descargando tu carpeta… (prototipo)'); },
+  map() { toast('Se abriría el mapa. (prototipo)'); },
+  remind() { toast('Listo, te avisamos cuando abra.'); },
+  calendar() { toast('Agregado a tu calendario. (prototipo)'); },
+  enrollGo(a) { S.fair = +a; go('enroll'); },
+  sendEnroll() { S.enrolled = true; go('enrolled'); },
+};
+
+/* ---------- eventos ---------- */
+phone.addEventListener('click', e => {
+  const t = e.target; let el;
+  if (cur === 'splash') { go('wel', 1, { replace: true }); return; }
+  if ((el = t.closest('[data-voice]'))) { voice(el); return; }
+  if ((el = t.closest('[data-pick]'))) { S.picked = +el.dataset.pick; render('pick'); return; }
+  if ((el = t.closest('[data-opt]'))) {
+    const [k, v] = el.dataset.opt.split(':');
+    if (k === 'where') { S.where = v; render(cur === 'shareWhere' ? 'shareWhere' : 'shareWa'); return; }
+    if (k === 'ct') { S.contact = v; render('waPick'); return; }
+    if (k === 'dif') { if (S.dif.has(v)) S.dif.delete(v); else if (S.dif.size >= 3) { toast('Podés elegir hasta 3'); return; } else S.dif.add(v); render('c6'); return; }
+    if (k === 'ped') { if (S.draft.ped.has(v)) S.draft.ped.delete(v); else S.draft.ped.add(v); render('t5'); return; }
+  }
+  if ((el = t.closest('[data-act]'))) { const a = el.dataset.act; if (ACT[a]) ACT[a](el.dataset.arg || '', el); }
+});
+phone.addEventListener('input', e => { if (e.target.matches('[inputmode="numeric"]')) e.target.value = digits(e.target.value); const h = $(`[data-hint="${e.target.id}"]`, screen); if (h) h.classList.add('hidden'); });
+
+/* ---------- panel / arranque ---------- */
+const jump = $('#jump');
+jump.innerHTML = Object.keys(R).map(k => `<option value="${k}">${NAMES[k] || k}</option>`).join('');
+jump.addEventListener('change', () => { if (cur === 'pedit' || jump.value === 'pedit') { S.editing = 'new'; S.pdraft = S.pdraft || { name: '', price: '', desc: '', photo: false }; } if (jump.value === 'fair') S.fair = 1; H = [['menu', null]]; render(jump.value, jump.value === 'wel' ? 1 : null); });
+$('#restart').addEventListener('click', () => { reset(); H = []; cur = null; render('splash'); });
+
+const paso = new URLSearchParams(location.search).get('paso');
+let start = ['splash'];
+if (paso) {
+  const m = paso.match(/^(carpeta|tienda)(?:-(\d+))?$/);
+  S.phone = '3425551234'; S.shop = 'Sabores de Casa'; S.intro = true; H = [['menu', null], ['dash', null]];
+  if (m && m[1] === 'tienda') { const n = Math.min(+m[2] || 0, 7); for (let i = 1; i < n && i <= 6; i++) S.tDone.add(i); if (n === 7) { S.open = true; S.tDone.add(6); } start = n ? ['t' + n] : ['tRoute']; if (n >= 2) { S.draft.name = 'Mermelada de naranja'; } if (n >= 3) { S.draft.photo = true; } if (n >= 4) { S.draft.price = 4500; } if (n >= 6) { S.draft.wa = S.phone; } }
+  else if (m) { const n = Math.min(+m[2] || 0, 8); for (let i = 1; i < n && i <= 7; i++) S.cDone.add(i); start = n ? ['c' + n] : ['cRoute']; H.push(['ferias', null]); }
+  else if (paso === 'links') start = ['links'];
+  else if (paso === 'panel') { H = [['menu', null]]; start = ['dash']; }
+}
+render(...start);
+})();
+</script>
+</body>
+</html>
