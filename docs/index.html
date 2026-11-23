@@ -294,6 +294,14 @@ body:not(.dev) #dev{display:none}
 .up-ic{display:grid;place-items:center}.up-ic svg{width:46px;height:46px}
 .upload.has{border:2px solid var(--d);background:var(--f)}
 .upload.has img{width:min(100%,200px);height:120px;object-fit:cover;border-radius:14px;display:block}
+/* Elegir foto: fotos reales y selección con colores de Yo Emprendo */
+.pick-tile{position:relative;padding:0;min-height:0;aspect-ratio:1;overflow:hidden;border:1px solid var(--ink);border-radius:18px;background:#eeeeea}
+.pick-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tile.pick-tile[aria-pressed=true]{outline:none;border:4px solid #4846b3;box-shadow:0 0 0 4px #c5c4f9}
+.tile.pick-tile:focus-visible{outline:3px solid var(--foco);outline-offset:3px}
+.pick-chk{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;background:#4846b3;color:#fff;display:grid;place-items:center;border:2px solid #fff}
+.pick-chk svg{width:22px;height:22px}
+.pb-img{width:min(100%,200px);height:120px;object-fit:cover;border-radius:12px;display:block}
 </style>
 </head>
 <body>
@@ -490,8 +498,8 @@ R.prods = () => {
 };
 R.prodDetail = () => { const p = prod(S.prod); return { html: `${bar()}<div class="photobox has t-prodt" style="pointer-events:none;min-height:190px">${p.image ? `<img class="product-detail-photo" src="${p.image}" alt="Foto de ${esc(p.name)}"${p.pos ? ` style="object-position:${p.pos}"` : ''}>` : ic('img')}</div><div><span class="tag ${p.hidden ? 'gray' : 'ok'}">${p.hidden ? 'Oculto' : 'Visible'}</span><h1 tabindex="-1" style="margin-top:8px">${esc(p.name)}</h1><p class="lead" style="margin-top:6px"><b>${fmt(p.price)}</b></p><p class="body muted" style="margin-top:6px">${esc(p.desc || 'Sin descripción.')}</p></div><div class="sp"></div>${btn('Editar producto', 'editProd', { tone: 'prodt', icon: 'pen', arg: p.id })}${btn(p.hidden ? 'Mostrar en la tienda' : 'Ocultar de la tienda', 'toggleProd', { sec: true, icon: p.hidden ? 'eye' : 'eyeoff', arg: p.id })}${btn('Eliminar producto', 'askDel', { tone: 'peligro', cls: 'mini', icon: 'trash' })}` }; };
 R.pdel = () => { const p = prod(S.prod); return { html: `${bar()}${hero('¿Eliminar este producto?', `«${esc(p.name)}» se va a borrar de tu tienda.`)}<div class="sp"></div>${btn('Sí, eliminar', 'doDel', { tone: 'peligro', arg: p.id })}${btn('No, dejarlo', 'back', { sec: true })}` }; };
-R.pnew = () => ({ html: `${bar()}${hero('Paso 1: Cargá tu producto')}<button type="button" class="photobox t-prodt ${S.pcPhoto ? 'has' : ''}" data-act="pickPhoto" data-arg="pnew">${S.pcPhoto ? ic('check') + 'Foto lista. Tocá para cambiarla' : ic('cam') + 'Tocar para sacar o subir una foto'}</button><div><p class="label">Podés contar:</p><ul class="bul"><li>• Nombre del producto</li><li>• Precio en pesos</li><li>• Descripción: qué es y para qué sirve</li></ul></div>${field('ptext', '<span class="sr">Contanos sobre tu producto</span>', { area: true, ph: 'Contanos sobre tu producto', v: S.pcText, err: 'Contanos algo de tu producto: el nombre y el precio, por ejemplo.' })}<div class="sp"></div>${btn('Guardar y seguir', 'pcSave', { tone: 'prodt' })}` });
-R.pedit = () => { const d = S.pdraft; return { html: `${bar()}${hero(S.editing === 'new' ? 'Producto nuevo' : 'Cambiar datos')}<button type="button" class="photobox t-prodt ${d.photo ? 'has' : ''}" data-act="pickPhoto" data-arg="pedit" style="min-height:120px">${d.photo ? ic('check') + 'Foto lista' : ic('cam') + 'Sumar una foto'}</button>${field('pname', 'Nombre', { v: d.name, ph: 'Ej: Mini Bag' })}${field('pprice', 'Precio', { num: true, pre: true, v: d.price, ph: 'Ej: 4500', voice: false, err: 'Escribí el precio con números.' })}${field('pdesc', 'Descripción (opcional)', { area: true, v: d.desc, ph: 'Ej: Cartera artesanal, ideal para llevar lo esencial todos los días.', err: '' })}<div class="sp"></div>${btn('Guardar', 'pSave', { tone: 'exito' })}` }; };
+R.pnew = () => ({ html: `${bar()}${hero('Paso 1: Cargá tu producto')}<button type="button" class="photobox t-prodt ${S.pcPhoto ? 'has' : ''}" data-act="pickPhoto" data-arg="pnew">${S.pcPhoto ? (S.pcImage ? `<img class="pb-img" src="${S.pcImage}" alt="Foto elegida">` : ic('check')) + 'Foto lista. Tocá para cambiarla' : ic('cam') + 'Tocar para sacar o subir una foto'}</button><div><p class="label">Podés contar:</p><ul class="bul"><li>• Nombre del producto</li><li>• Precio en pesos</li><li>• Descripción: qué es y para qué sirve</li></ul></div>${field('ptext', '<span class="sr">Contanos sobre tu producto</span>', { area: true, ph: 'Contanos sobre tu producto', v: S.pcText, err: 'Contanos algo de tu producto: el nombre y el precio, por ejemplo.' })}<div class="sp"></div>${btn('Guardar y seguir', 'pcSave', { tone: 'prodt' })}` });
+R.pedit = () => { const d = S.pdraft; return { html: `${bar()}${hero(S.editing === 'new' ? 'Producto nuevo' : 'Cambiar datos')}<button type="button" class="photobox t-prodt ${d.photo ? 'has' : ''}" data-act="pickPhoto" data-arg="pedit" style="min-height:120px">${d.photo ? (d.image ? `<img class="pb-img" src="${d.image}" alt="Foto del producto">` : ic('check')) + 'Foto lista · tocá para cambiarla' : ic('cam') + 'Sumar una foto'}</button>${field('pname', 'Nombre', { v: d.name, ph: 'Ej: Mini Bag' })}${field('pprice', 'Precio', { num: true, pre: true, v: d.price, ph: 'Ej: 4500', voice: false, err: 'Escribí el precio con números.' })}${field('pdesc', 'Descripción (opcional)', { area: true, v: d.desc, ph: 'Ej: Cartera artesanal, ideal para llevar lo esencial todos los días.', err: '' })}<div class="sp"></div>${btn('Guardar', 'pSave', { tone: 'exito' })}` }; };
 
 /* pedidos */
 R.orders = () => {
@@ -534,7 +542,13 @@ R.enrolled = () => ({ html: `<div class="sp"></div><div class="card t-exito" sty
 
 /* selector de foto (compartido) */
 const SW = ['#fde68a', '#bbf7d0', '#bae6fd', '#fbcfe8', '#ddd6fe', '#fed7aa'];
-R.pick = () => ({ html: `${bar()}${['pedit', 'prod', 'pnew'].includes(S.pickFor) ? hero('Elegí la foto de tu producto', 'Tocá la foto que querés usar.') : hero('Elegí una foto', 'Tocá la que quieras.')}<div class="gal">${SW.slice(0, 4).map((c, i) => `<button type="button" class="tile" style="padding:0;border:0;background:none;min-height:0" data-pick="${i}" aria-pressed="${S.picked === i}" aria-label="Foto ${i + 1}"><span class="sw" style="background:${S.picked === i ? c : '#e5e5e3'};width:100%">${ic('img')}</span></button>`).join('')}</div><div class="sp"></div>${btn(['pedit', 'prod', 'pnew'].includes(S.pickFor) ? 'Elegir esta foto' : 'Usar esta foto', 'pickUse', { tone: ['pnew', 'pedit'].includes(S.pickFor) ? 'prodt' : 'tienda', dis: S.picked === null })}` });
+const PICS = [
+  { src: 'images/cartera-marron.jpg', alt: 'Cartera de cuero marrón con manijas oscuras' },
+  { src: 'images/neceser-colores.jpg', alt: 'Tres neceseres de cuero con cierre dorado' },
+  { src: 'images/bolso-plano.jpg', alt: 'Dos bolsos planos de cuero, negro y suela' },
+  { src: 'images/canasto-cuero.jpg', alt: 'Canasto de cuero suela con revistas' },
+];
+R.pick = () => { const forProd = ['pedit', 'prod', 'pnew'].includes(S.pickFor); return { html: `${bar()}${forProd ? hero('Elegí la foto de tu producto', 'Tocá la foto que querés usar.') : hero('Elegí una foto', 'Tocá la que quieras.')}<div class="gal">${PICS.map((f, i) => `<button type="button" class="tile pick-tile" data-pick="${i}" aria-pressed="${S.picked === i}" aria-label="Foto ${i + 1}: ${f.alt}"><img src="${f.src}" alt="">${S.picked === i ? `<span class="pick-chk">${ic('check')}</span>` : ''}</button>`).join('')}</div><div class="sp"></div>${btn(forProd ? 'Elegir esta foto' : 'Usar esta foto', 'pickUse', { tone: 'tienda', dis: S.picked === null })}` }; };
 
 /* enlaces de la guía física */
 R.links = () => ({ html: `${bar({ noBack: true })}${hero('Links de la guía física', 'Cada QR de la guía abre un paso.')}<div class="qr"><p class="label">Tienda</p>${[1, 2, 3, 4, 5, 6].map(n => `<code>?paso=tienda-${n}</code>`).join('')}<p class="label" style="margin-top:6px">Carpeta</p>${[1, 2, 3, 4, 5, 6, 7, 8].map(n => `<code>?paso=carpeta-${n}</code>`).join('')}</div>${btn('Ir al inicio', 'toMenu', { tone: 'tienda' })}` });
@@ -660,7 +674,8 @@ const ACT = {
   pickPhoto(a) { S.pickFor = a; S.picked = null; if (cur === 't2') S.draft.name = val('pname') || S.draft.name; if (cur === 'pnew') S.pcText = val('ptext'); if (cur === 'pedit') { S.pdraft.name = val('pname'); S.pdraft.price = val('pprice'); S.pdraft.desc = val('pdesc'); } if (cur === 'c1') { S.brandLine = val('line'); S.brand = val('brand'); } go('pick'); },
   pickUse() {
     const a = S.pickFor; if (S.picked === null) return;
-    if (a === 'prod') S.draft.photo = true; else if (a === 'pedit') S.pdraft.photo = true; else if (a === 'pnew') S.pcPhoto = true; else if (a === 'logo') S.logo = true; else S.photos.add(a);
+    const img = (PICS[S.picked] || {}).src || null;
+    if (a === 'prod') { S.draft.photo = true; S.draft.image = img; } else if (a === 'pedit') { S.pdraft.photo = true; S.pdraft.image = img; } else if (a === 'pnew') { S.pcPhoto = true; S.pcImage = img; } else if (a === 'logo') S.logo = true; else S.photos.add(a);
     back();
   },
   noLogo() { S.brandLine = val('line'); S.brand = val('brand'); S.logo = false; toast('Sin problema, seguimos sin logo.'); },
@@ -688,12 +703,12 @@ const ACT = {
   toggleProd(a) { const p = prod(a); p.hidden = !p.hidden; render('prodDetail'); toast(p.hidden ? 'Ahora no se ve en tu tienda.' : 'Ahora se ve en tu tienda.'); },
   askDel() { go('pdel'); },
   doDel(a) { S.prods = S.prods.filter(p => p.id !== +a); H = [['menu', null], ['dash', null]]; render('prods'); toast('Eliminamos el producto.'); },
-  newProd() { S.pcText = ''; S.pcPhoto = false; go('pnew'); },
-  pcSave() { const t = val('ptext'); if (!/\d/.test(t)) { $('[data-hint=ptext]', screen).classList.remove('hidden'); $('#ptext', screen).focus(); return; } if (!S.pcPhoto) { S.pcText = t; showTip('No pudimos guardar tu foto. Revisá que se vea bien y probá de nuevo.', null, { err: true }); return; } const m = t.match(/\$?\s*(\d[\d.]*)/), price = +digits(m[1]), name = t.split(/[,.$]/)[0].trim().slice(0, 40) || 'Producto nuevo'; S.prods.unshift({ id: S.nextId++, name, price, desc: t, hidden: false, photo: 't-tienda' }); S.pf = 'todos'; H = [['menu', null], ['dash', null]]; S.notice = 'Listo. Guardamos los cambios.'; render('prods'); },
-  editProd(a) { const p = prod(a); S.editing = p.id; S.pdraft = { name: p.name, price: p.price, desc: p.desc, photo: true }; go('pedit'); },
+  newProd() { S.pcText = ''; S.pcPhoto = false; S.pcImage = null; go('pnew'); },
+  pcSave() { const t = val('ptext'); if (!/\d/.test(t)) { $('[data-hint=ptext]', screen).classList.remove('hidden'); $('#ptext', screen).focus(); return; } if (!S.pcPhoto) { S.pcText = t; showTip('No pudimos guardar tu foto. Revisá que se vea bien y probá de nuevo.', null, { err: true }); return; } const m = t.match(/\$?\s*(\d[\d.]*)/), price = +digits(m[1]), name = t.split(/[,.$]/)[0].trim().slice(0, 40) || 'Producto nuevo'; S.prods.unshift({ id: S.nextId++, name, price, desc: t, hidden: false, photo: 't-tienda', image: S.pcImage || null }); S.pf = 'todos'; H = [['menu', null], ['dash', null]]; S.notice = 'Listo. Guardamos los cambios.'; render('prods'); },
+  editProd(a) { const p = prod(a); S.editing = p.id; S.pdraft = { name: p.name, price: p.price, desc: p.desc, photo: true, image: p.image || null }; go('pedit'); },
   pSave() {
     if (!need('pname') || !need('pprice', 1)) return;
-    const d = { name: val('pname'), price: +digits(val('pprice')), desc: val('pdesc') };
+    const d = { name: val('pname'), price: +digits(val('pprice')), desc: val('pdesc') }; if (S.pdraft && S.pdraft.image) { d.image = S.pdraft.image; d.pos = null; }
     if (S.editing === 'new') S.prods.unshift({ id: S.nextId++, ...d, hidden: false, photo: 't-tienda' }); else Object.assign(prod(S.editing), d);
     S.pdraft = null; S.pf = 'todos'; H = [['menu', null], ['dash', null]]; S.notice = 'Listo. Guardamos los cambios.'; render('prods');
   },
