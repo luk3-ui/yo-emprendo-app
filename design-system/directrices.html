@@ -5,13 +5,15 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={theme:{extend:{fontFamily:{sans:['"Atkinson Hyperlegible"','system-ui','sans-serif']},borderRadius:{xl:'16px','2xl':'18px'},colors:{ink:'#101010',yeds:'#0a5c55',azul:'#1e40af',indigoy:'#4846b3',ciruela:'#701a75',teal:{50:'#e6f4f2',800:'#0a5c55',900:'#073f3a'},slate:{500:'#6f6f6f',600:'#4b4b4b',700:'#3a3a3a',800:'#101010',900:'#101010'},stone:{50:'#fafaf9',100:'#f1f1f1',200:'#e7e5e4',300:'#c4c4c4'}}}}}</script>
 <link rel="stylesheet" href="yeds.css">
+<script>try{if(localStorage.getItem("ye-theme")==="dark")document.documentElement.classList.add("ye-dark")}catch(e){}</script>
 <style>body{font-size:20px;line-height:1.7}:focus-visible{outline:3px solid #0a5c55;outline-offset:3px;border-radius:4px}.dark :focus-visible{outline-color:#5eead4}
 .tile{border-bottom-width:8px;border-style:solid;transition:transform .1s}.tile:hover{transform:translateY(-3px)}</style></head>
-<body class="bg-white text-ink font-sans antialiased">
+<body class="text-ink font-sans antialiased">
 <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:bg-yeds focus:text-white focus:px-4 focus:py-2 focus:rounded">Saltar al contenido</a>
 <header class="ye-header"><div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-4">
 <a href="index.html" class="shrink-0 px-3 py-1 ye-logo text-2xl tracking-tight" aria-label="Yo Emprendo Design System, inicio">Y·E·DS</a>
 <nav aria-label="Navegación principal" class="hidden lg:block"><ul class="ye-nav flex gap-1 text-lg"><li><a href="index.html" class="block px-3 py-2 rounded-lg " >Inicio</a></li><li><a href="hallazgos.html" class="block px-3 py-2 rounded-lg " >Hallazgos</a></li><li><a href="principios.html" class="block px-3 py-2 rounded-lg " >Principios</a></li><li><a href="digital.html" class="block px-3 py-2 rounded-lg" aria-current="page">Digital (App)</a></li><li><a href="analogico.html" class="block px-3 py-2 rounded-lg " >Analógico (Físico)</a></li><li><a href="personas.html" class="block px-3 py-2 rounded-lg " >Personas</a></li></ul></nav>
+<button id="ye-theme" type="button" class="ye-menu ye-theme px-4 py-2 font-bold text-lg" aria-pressed="false"><span class="ye-t-dark">◐ Oscuro</span><span class="ye-t-light">◑ Claro</span></button>
 <button id="mb" type="button" aria-expanded="false" aria-controls="mm" class="lg:hidden ye-menu px-4 py-2 font-bold text-lg">Menú ☰</button></div>
 <nav id="mm" aria-label="Navegación principal móvil" class="hidden lg:hidden border-t border-stone-300 px-5 py-3"><ul class="ye-nav grid gap-1 text-xl"><li><a href="index.html" class="block px-3 py-2 rounded-lg " >Inicio</a></li><li><a href="hallazgos.html" class="block px-3 py-2 rounded-lg " >Hallazgos</a></li><li><a href="principios.html" class="block px-3 py-2 rounded-lg " >Principios</a></li><li><a href="digital.html" class="block px-3 py-2 rounded-lg" aria-current="page">Digital (App)</a></li><li><a href="analogico.html" class="block px-3 py-2 rounded-lg " >Analógico (Físico)</a></li><li><a href="personas.html" class="block px-3 py-2 rounded-lg " >Personas</a></li></ul></nav></header>
 <main id="contenido">
@@ -20,4 +22,4 @@
 </main>
 <footer class="ye-footer mt-20"><div class="max-w-6xl mx-auto px-5 py-10 grid gap-2"><p class="font-bold text-xl text-white">Yo Emprendo Design System (YEDS)</p>
 <p class="text-base">Autonomía digital de adultos mayores emprendedores del PEIS · Hallazgos H1–H10 · Criterios C1–C6 · <a class="underline" href="acerca.html">Acerca de</a></p></div></footer>
-<script>const b=document.getElementById('mb'),m=document.getElementById('mm');b.onclick=()=>{const o=m.classList.toggle('hidden')===false;b.setAttribute('aria-expanded',o)};</script></body></html>
+<script>const b=document.getElementById('mb'),m=document.getElementById('mm');b.onclick=()=>{const o=m.classList.toggle('hidden')===false;b.setAttribute('aria-expanded',o)};</script><script>(function(){var b=document.getElementById("ye-theme"),r=document.documentElement;function s(){b.setAttribute("aria-pressed",r.classList.contains("ye-dark"))}s();b.onclick=function(){r.classList.toggle("ye-dark");try{localStorage.setItem("ye-theme",r.classList.contains("ye-dark")?"dark":"light")}catch(e){}s()}})();</script></body></html>

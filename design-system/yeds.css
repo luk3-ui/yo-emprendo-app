@@ -62,7 +62,40 @@ nav[aria-label="Páginas"] a:active{transform:translate(-10px,10px);box-shadow:n
 .rounded-2xl{border-radius:18px}
 .rounded-xl{border-radius:16px}
 
-/* ilustraciones: solo contorno; el relleno toma el color de la card para tapar cruces de líneas */
-svg .ye-bg{fill:var(--f,#fff);transition:fill .12s}
-.tile:hover svg .ye-bg{fill:var(--h,#fff)}
-li svg .ye-bg{fill:#fff}
+
+/* ---------- tema: claro #F1F3F0 / oscuro #101010 ---------- */
+:root{--page:#F1F3F0;--text:#101010;--surface:#fff;--line:#101010;--muted:#4b4b4b}
+html.ye-dark{--page:#101010;--text:#F1F3F0;--surface:#1c1c1c;--line:#F1F3F0;--muted:#c4c4c4;color-scheme:dark}
+body{background:var(--page)!important;color:var(--text)!important;transition:background .15s,color .15s}
+.ye-header,.ye-footer{background:var(--page);color:var(--text);border-color:var(--line)}
+.ye-footer p,.ye-nav a{color:var(--text)}
+.ye-t-light{display:none}html.ye-dark .ye-t-dark{display:none}html.ye-dark .ye-t-light{display:inline}
+.ye-theme{white-space:nowrap}
+
+/* modo oscuro: superficies, textos y bordes */
+html.ye-dark .ye-nav a:hover{background:#2a2a2a}
+html.ye-dark .ye-nav a[aria-current=page]{color:#101010}
+html.ye-dark .ye-menu{background:#1c1c1c;border-color:var(--line);color:var(--text);box-shadow:-5px 5px 0 0 #4b4b4b}
+html.ye-dark .bg-white{background:var(--surface)!important}
+html.ye-dark .bg-white.rounded-2xl.border,html.ye-dark .border-stone-300{border-color:#4b4b4b!important}
+html.ye-dark .text-slate-600,html.ye-dark .text-slate-700{color:var(--muted)!important}
+html.ye-dark .text-slate-800,html.ye-dark .text-slate-900,html.ye-dark .text-ink{color:var(--text)!important}
+html.ye-dark main h2.text-yeds,html.ye-dark .text-yeds{color:#7fd1c7!important}
+html.ye-dark .text-azul{color:#a8bff5!important}
+html.ye-dark .text-indigoy{color:#b4b3f4!important}
+html.ye-dark .text-ciruela{color:#e2a8eb!important}
+html.ye-dark [style*="color:#ba1650"]{color:#f0a3b5!important}
+html.ye-dark .bg-teal-50{background:#0f2a27!important}
+html.ye-dark .border-yeds{border-color:#7fd1c7!important}
+html.ye-dark a.underline{color:inherit}
+html.ye-dark nav[aria-label="Páginas"] a{background:#1c1c1c;border-color:#c4c4c4!important;box-shadow:-10px 10px 0 0 #4b4b4b}
+html.ye-dark nav[aria-label="Páginas"] a:hover{background:#2a2a2a}
+html.ye-dark .border-t,html.ye-dark .border-stone-300{border-color:#3a3a3a}
+/* las cards de color y las portadas mantienen sus tonos y la tinta oscura */
+html.ye-dark .tile,html.ye-dark .tile *{color:#101010!important}
+html.ye-dark .tile[style*="--f:#fff"]{background:var(--surface)!important}
+html.ye-dark .tile[style*="--f:#fff"] *{color:var(--text)!important}
+html.ye-dark .ye-hero,html.ye-dark .ye-hero *{color:#101010!important}
+html.ye-dark .ye-ficha{background:var(--surface);color:var(--text)}
+html.ye-dark .ye-ficha h2{filter:brightness(1.8)}
+html.ye-dark main svg[viewBox="0 0 96 96"]:not(.tile svg){stroke:#F1F3F0}
