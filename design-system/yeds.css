@@ -1,0 +1,63 @@
+/* Yo Emprendo Design System — identidad tomada de la app (docs/index.html).
+   Tinta #101010, fondo blanco, tonos de sección (fondo --f / borde y sombra --d / hover --h),
+   sombra dura diagonal (-10, +10), radios 16–20 px, foco amarillo. */
+:root{--ink:#101010;--gris:#6f6f6f;--gris-c:#c4c4c4;--foco:#facc15;--bg:#ffffff}
+.t-tienda{--f:#c5c4f9;--d:#4846b3;--h:#b4b3f4}
+.t-feria{--f:#e9c0c6;--d:#ba1650;--h:#e2adb6}
+.t-exito{--f:#bfe3cb;--d:#15803d;--h:#aad6b9}
+.t-neutro{--f:#fff;--d:#6f6f6f;--h:#f1f1f1}
+.t-teal{--f:#b7e3de;--d:#0a5c55;--h:#a2d6d0}
+.t-prodt{--f:#c3d3f6;--d:#1e40af;--h:#b0c4f0}
+.t-pedt{--f:#e3c4e8;--d:#701a75;--h:#d8afdf}
+.t-blanco{--f:#fff;--d:#0a5c55;--h:#e6f4f2}
+.t-peligro{--f:#fbd5d0;--d:#b42318;--h:#f6c0b9}
+.t-aviso{--f:#ffc93e;--d:#8a5a00;--h:#f5bd2a}
+
+body{font-size:20px;line-height:1.6;color:var(--ink);background:var(--bg)}
+:focus-visible{outline:3px solid var(--foco)!important;outline-offset:2px;border-radius:4px}
+
+/* encabezado y pie: blanco con borde de tinta, como el marco del teléfono */
+.ye-header{background:#fff;color:var(--ink);border-bottom:2px solid var(--ink)}
+.ye-logo{display:inline-block;padding:4px 14px;border-radius:14px;background:#b7e3de;border:2px solid #0a5c55;box-shadow:-5px 5px 0 0 #0a5c55;color:var(--ink);font-weight:700;margin:0 5px 5px 0;transition:transform .08s,box-shadow .08s}
+.ye-logo:active{transform:translate(-5px,5px);box-shadow:none}
+.ye-nav a{color:var(--ink);border:1px solid transparent;border-radius:14px}
+.ye-nav a:hover{background:#f1f1f1}
+.ye-nav a[aria-current=page]{background:#b7e3de;border-color:#0a5c55;font-weight:700}
+.ye-menu{background:#fafaf9;border:1px solid var(--ink);border-radius:16px;box-shadow:-5px 5px 0 0 var(--gris-c);margin:0 5px 5px 0;color:var(--ink)}
+.ye-menu:active{transform:translate(-5px,5px);box-shadow:none}
+.ye-footer{background:#fff;color:var(--ink);border-top:2px solid var(--ink)}
+.ye-footer p{color:var(--ink)}
+
+/* portada de cada página: fondo del tono de su sección, borde y texto en tinta */
+.ye-hero{background:var(--f);color:var(--ink);border-bottom:2px solid var(--d)}
+.ye-hero p,.ye-hero nav{color:#2b2b2b!important}
+.ye-hero h1{color:var(--ink)}
+
+/* tiles = cards de la app: sombra dura que se hunde al tocar */
+.tile{background:var(--f)!important;border:1px solid var(--d)!important;border-radius:18px!important;box-shadow:-10px 10px 0 0 var(--d);margin:0 0 10px 10px;color:var(--ink)!important;transition:transform .08s,box-shadow .08s,background .12s}
+.tile:hover{background:var(--h)!important;transform:none}
+.tile:active{transform:translate(-10px,10px);box-shadow:none}
+.tile>span:first-child{color:var(--d)!important}
+
+/* botón principal de la app */
+.ye-btn{display:inline-flex;align-items:center;justify-content:center;min-height:64px;padding:10px 24px;font-weight:700;font-size:22px;color:var(--ink);background:var(--f);border:2px solid var(--d);border-radius:16px;box-shadow:-5px 5px 0 0 var(--d);margin:0 5px 5px 5px;transition:transform .08s,box-shadow .08s,background .12s}
+.ye-btn:hover{background:var(--h)}
+.ye-btn:active{transform:translate(-5px,5px);box-shadow:none}
+
+/* Anterior / Siguiente = botón secundario: blanco, borde gris, sombra gris clara */
+nav[aria-label="Páginas"] a{background:#fff;border:2px solid var(--gris)!important;border-radius:20px!important;box-shadow:-10px 10px 0 0 var(--gris-c);margin-left:10px;transition:transform .08s,box-shadow .08s}
+nav[aria-label="Páginas"] a:hover{background:#f4f4f4}
+nav[aria-label="Páginas"] a:active{transform:translate(-10px,10px);box-shadow:none}
+
+/* fichas de persona: card blanca con borde y sombra dura del color de la persona */
+.ye-ficha{background:#fff;color:var(--ink);border:1px solid var(--d);border-top-width:8px;border-radius:18px;box-shadow:-10px 10px 0 0 var(--d);margin-left:10px}
+.ye-ficha h2{color:var(--d)!important}
+
+/* "Versión actual en la app": card teal clara */
+.bg-teal-50{background:#e6f4f2!important}
+.border-yeds{border-color:#0a5c55!important}
+
+/* cajas de contenido blancas: borde de tinta como las cards de la app */
+.bg-white.rounded-2xl.border{border-color:var(--ink)}
+.rounded-2xl{border-radius:18px}
+.rounded-xl{border-radius:16px}
