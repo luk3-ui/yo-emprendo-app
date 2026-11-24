@@ -61,3 +61,8 @@ nav[aria-label="Páginas"] a:active{transform:translate(-10px,10px);box-shadow:n
 .bg-white.rounded-2xl.border{border-color:var(--ink)}
 .rounded-2xl{border-radius:18px}
 .rounded-xl{border-radius:16px}
+
+/* ilustraciones: solo contorno; el relleno toma el color de la card para tapar cruces de líneas */
+svg .ye-bg{fill:var(--f,#fff);transition:fill .12s}
+.tile:hover svg .ye-bg{fill:var(--h,#fff)}
+li svg .ye-bg{fill:#fff}
